@@ -116,7 +116,7 @@
         .char {
             display: inline-block;
             opacity: 0;
-            transform: translateY(40px) rotateX(-90deg);
+            transform: translateY(40px) rotateX(-90px); /* restored original animation */
             transition: all 0.7s cubic-bezier(0.2, 0.6, 0.2, 1);
             color: transparent;
             position: relative;
@@ -307,153 +307,152 @@
 </head>
 <body>
 
-    <header>
-        <a href="#" class="logo">
-            <img src="SG logo transparent.png" alt="SG Logo" class="logo-img">
-            <span class="logo-text">SKOEDTGRAPHICS</span>
-        </a>
-        <nav>
-            <a href="#work">Projects</a>
-            <a href="#contact">Contact</a>
-        </nav>
-    </header>
+<header>
+    <a href="#" class="logo">
+        <img src="SG logo transparent.png" alt="SG Logo" class="logo-img">
+        <span class="logo-text">SKOEDTGRAPHICS</span>
+    </a>
+    <nav>
+        <a href="#work">Projects</a>
+        <a href="#contact">Contact</a>
+    </nav>
+</header>
 
-    <section class="hero" id="about">
-        <h1>VISUAL INNOVATION</h1>
-        <p class="reveal">Concept, design and execution by Magnus Skødt Larsen</p>
-        
-        <a href="#work" class="scroll-down-arrow">
-            <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-    </section>
+<section class="hero" id="about">
+    <h1>VISUAL INNOVATION</h1>
+    <p class="reveal">Concept, design and execution by Magnus Skødt Larsen</p>
+    <a href="#work" class="scroll-down-arrow">
+        <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+</section>
 
-    <!-- Video Section Moved Above Gallery -->
-    <section class="video-section reveal">
-        <h2>Video Showcase</h2>
-        <div class="video-container">
-            <video controls poster="roverimg.PNG">
-                <source src="rover.mp4" type="video/mp4">
-            </video>
-        </div>
-    </section>
-
-    <!-- Portfolio Gallery -->
-    <main class="portfolio-section" id="work">
-        <h2 class="reveal" style="text-align:center; margin-bottom:50px;">Selected Works</h2>
-        <div class="mosaic-grid">
-            <div class="mosaic-item span-2-col span-2-row reveal">
-                <a href="aab2.png" class="lightbox-link">
-                    <img src="aab2.png" alt="Project 1">
-                    <div class="overlay"><h3>Player Poster</h3><p>Photoshop</p></div>
-                </a>
-            </div>
-            <div class="mosaic-item reveal">
-                <a href="marley.png" class="lightbox-link">
-                    <img src="marley.png" alt="Project 2">
-                    <div class="overlay"><h3>Marley Poster</h3><p>Illustrator</p></div>
-                </a>
-            </div>
-            <div class="mosaic-item span-2-row reveal">
-                <a href="f1.png" class="lightbox-link">
-                    <img src="f1.png" alt="Project 3">
-                    <div class="overlay"><h3>F1 Concept</h3><p>Photoshop</p></div>
-                </a>
-            </div>
-            <div class="mosaic-item span-2-col reveal">
-                <a href="lac.PNG" class="lightbox-link">
-                    <img src="lac.PNG" alt="Project 4">
-                    <div class="overlay"><h3>LAC Branding</h3><p>Illustrator</p></div>
-                </a>
-            </div>
-
-            <!-- New 5 Images -->
-            <div class="mosaic-item reveal">
-                <a href="new1.png" class="lightbox-link">
-                    <img src="new1.png" alt="Project 5">
-                    <div class="overlay"><h3>New Project 1</h3><p>Photoshop</p></div>
-                </a>
-            </div>
-            <div class="mosaic-item reveal">
-                <a href="new2.png" class="lightbox-link">
-                    <img src="new2.png" alt="Project 6">
-                    <div class="overlay"><h3>New Project 2</h3><p>Illustrator</p></div>
-                </a>
-            </div>
-            <div class="mosaic-item reveal">
-                <a href="new3.png" class="lightbox-link">
-                    <img src="new3.png" alt="Project 7">
-                    <div class="overlay"><h3>New Project 3</h3><p>Photoshop</p></div>
-                </a>
-            </div>
-            <div class="mosaic-item reveal">
-                <a href="new4.png" class="lightbox-link">
-                    <img src="new4.png" alt="Project 8">
-                    <div class="overlay"><h3>New Project 4</h3><p>Illustrator</p></div>
-                </a>
-            </div>
-            <div class="mosaic-item reveal">
-                <a href="new5.png" class="lightbox-link">
-                    <img src="new5.png" alt="Project 9">
-                    <div class="overlay"><h3>New Project 5</h3><p>Photoshop</p></div>
-                </a>
-            </div>
-        </div>
-    </main>
-
-    <footer id="contact" class="reveal">
-        <h2>Let's build something together.</h2>
-        <br>
-        <p><a href="mailto:magnusskoedtlarsen@hotmail.com" style="color:#ffffff; text-decoration:none;">magnusskoedtlarsen@hotmail.com</a></p>
-        <br>
-        <p>&copy; 2026 SKOEDTGRAPHICS</p>
-    </footer>
-
-    <!-- Lightbox Overlay -->
-    <div class="lightbox-overlay" id="lightbox">
-        <img src="" alt="Full view">
+<!-- Video Section -->
+<section class="video-section reveal">
+    <h2>Video Showcase</h2>
+    <div class="video-container">
+        <video controls poster="roverimg.PNG">
+            <source src="rover.mp4" type="video/mp4">
+        </video>
     </div>
+</section>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Hero text animation
-            const title = document.querySelector('.hero h1');
-            const text = title.textContent;
-            title.textContent = ''; 
-            [...text].forEach((char, i) => {
-                const span = document.createElement('span');
-                span.textContent = char === ' ' ? '\u00A0' : char;
-                span.className = 'char';
-                span.style.transitionDelay = `${i * 0.05}s`;
-                title.appendChild(span);
+<!-- Portfolio Gallery -->
+<main class="portfolio-section" id="work">
+    <h2 class="reveal" style="text-align:center; margin-bottom:50px;">Selected Works</h2>
+    <div class="mosaic-grid">
+        <div class="mosaic-item span-2-col span-2-row reveal">
+            <a href="aab2.png" class="lightbox-link">
+                <img src="aab2.png" alt="Project 1">
+                <div class="overlay"><h3>Player Poster</h3><p>Photoshop</p></div>
+            </a>
+        </div>
+        <div class="mosaic-item reveal">
+            <a href="marley.png" class="lightbox-link">
+                <img src="marley.png" alt="Project 2">
+                <div class="overlay"><h3>Marley Poster</h3><p>Illustrator</p></div>
+            </a>
+        </div>
+        <div class="mosaic-item span-2-row reveal">
+            <a href="f1.png" class="lightbox-link">
+                <img src="f1.png" alt="Project 3">
+                <div class="overlay"><h3>F1 Concept</h3><p>Photoshop</p></div>
+            </a>
+        </div>
+        <div class="mosaic-item span-2-col reveal">
+            <a href="lac.PNG" class="lightbox-link">
+                <img src="lac.PNG" alt="Project 4">
+                <div class="overlay"><h3>LAC Branding</h3><p>Illustrator</p></div>
+            </a>
+        </div>
+
+        <!-- 5 New Images -->
+        <div class="mosaic-item reveal">
+            <a href="new1.png" class="lightbox-link">
+                <img src="new1.png" alt="Project 5">
+                <div class="overlay"><h3>New Project 1</h3><p>Photoshop</p></div>
+            </a>
+        </div>
+        <div class="mosaic-item reveal">
+            <a href="new2.png" class="lightbox-link">
+                <img src="new2.png" alt="Project 6">
+                <div class="overlay"><h3>New Project 2</h3><p>Illustrator</p></div>
+            </a>
+        </div>
+        <div class="mosaic-item reveal">
+            <a href="new3.png" class="lightbox-link">
+                <img src="new3.png" alt="Project 7">
+                <div class="overlay"><h3>New Project 3</h3><p>Photoshop</p></div>
+            </a>
+        </div>
+        <div class="mosaic-item reveal">
+            <a href="new4.png" class="lightbox-link">
+                <img src="new4.png" alt="Project 8">
+                <div class="overlay"><h3>New Project 4</h3><p>Illustrator</p></div>
+            </a>
+        </div>
+        <div class="mosaic-item reveal">
+            <a href="new5.png" class="lightbox-link">
+                <img src="new5.png" alt="Project 9">
+                <div class="overlay"><h3>New Project 5</h3><p>Photoshop</p></div>
+            </a>
+        </div>
+    </div>
+</main>
+
+<footer id="contact" class="reveal">
+    <h2>Let's build something together.</h2>
+    <br>
+    <p><a href="mailto:magnusskoedtlarsen@hotmail.com" style="color:#ffffff; text-decoration:none;">magnusskoedtlarsen@hotmail.com</a></p>
+    <br>
+    <p>&copy; 2026 SKOEDTGRAPHICS</p>
+</footer>
+
+<!-- Lightbox Overlay -->
+<div class="lightbox-overlay" id="lightbox">
+    <img src="" alt="Full view">
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Hero text animation
+        const title = document.querySelector('.hero h1');
+        const text = title.textContent;
+        title.textContent = ''; 
+        [...text].forEach((char, i) => {
+            const span = document.createElement('span');
+            span.textContent = char === ' ' ? '\u00A0' : char;
+            span.className = 'char';
+            span.style.transitionDelay = `${i * 0.05}s`;
+            title.appendChild(span);
+        });
+        setTimeout(() => {
+            document.querySelectorAll('.char').forEach(c => c.classList.add('active'));
+        }, 300);
+
+        // Scroll reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
             });
-            setTimeout(() => {
-                document.querySelectorAll('.char').forEach(c => c.classList.add('active'));
-            }, 300);
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-            // Scroll reveal
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) entry.target.classList.add('active');
-                });
-            }, { threshold: 0.1 });
-            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        // Lightbox functionality
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = lightbox.querySelector('img');
 
-            // Lightbox functionality
-            const lightbox = document.getElementById('lightbox');
-            const lightboxImg = lightbox.querySelector('img');
-
-            document.querySelectorAll('.lightbox-link').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    lightboxImg.src = link.href;
-                    lightbox.classList.add('active');
-                });
-            });
-
-            lightbox.addEventListener('click', () => {
-                lightbox.classList.remove('active');
+        document.querySelectorAll('.lightbox-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                lightboxImg.src = link.href;
+                lightbox.classList.add('active');
             });
         });
-    </script>
+
+        lightbox.addEventListener('click', () => {
+            lightbox.classList.remove('active');
+        });
+    });
+</script>
 </body>
 </html>
