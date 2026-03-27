@@ -116,13 +116,12 @@
         .char {
             display: inline-block;
             opacity: 0;
-            transform: translateY(40px) rotateX(-90px);
+            transform: translateY(40px) rotateX(-90deg);
             transition: all 0.7s cubic-bezier(0.2, 0.6, 0.2, 1);
             color: transparent;
             position: relative;
         }
 
-        /* 🔥 UPDATED: stronger animated gradient */
         .char.active {
             opacity: 1;
             transform: translateY(0) rotateX(0);
@@ -147,7 +146,6 @@
             max-width: 600px;
             opacity: 0;
             transition: opacity 3.5s ease-in-out;
-
         }
         
         .hero p.visible {
@@ -224,6 +222,12 @@
         .mosaic-item:hover img { transform: scale(1.08); filter: grayscale(0%); }
         .mosaic-item:hover .overlay { opacity: 1; }
 
+        .mosaic-item .overlay h3,
+        .mosaic-item .overlay p {
+            color: #ffffff;
+            transition: none;
+        }
+
         /* Lightbox overlay */
         .lightbox-overlay {
             position: fixed;
@@ -250,12 +254,6 @@
             pointer-events: all;
         }
 
-        .mosaic-item .overlay h3,
-        .mosaic-item .overlay p {
-            color: #ffffff; /* or whatever fixed color you want */
-            transition: none; /* prevent unwanted color transitions */
-        }
-        
         /* Video Section */
         .video-section {
             padding: 100px 50px;
@@ -329,6 +327,17 @@
         </a>
     </section>
 
+    <!-- Video Section Moved Above Gallery -->
+    <section class="video-section reveal">
+        <h2>Video Showcase</h2>
+        <div class="video-container">
+            <video controls poster="roverimg.PNG">
+                <source src="rover.mp4" type="video/mp4">
+            </video>
+        </div>
+    </section>
+
+    <!-- Portfolio Gallery -->
     <main class="portfolio-section" id="work">
         <h2 class="reveal" style="text-align:center; margin-bottom:50px;">Selected Works</h2>
         <div class="mosaic-grid">
@@ -339,25 +348,57 @@
                 </a>
             </div>
             <div class="mosaic-item reveal">
-                <a href="marley.png" class="lightbox-link"><img src="marley.png" alt="Project 2"></a>
+                <a href="marley.png" class="lightbox-link">
+                    <img src="marley.png" alt="Project 2">
+                    <div class="overlay"><h3>Marley Poster</h3><p>Illustrator</p></div>
+                </a>
             </div>
             <div class="mosaic-item span-2-row reveal">
-                <a href="f1.png" class="lightbox-link"><img src="f1.png" alt="Project 3"></a>
+                <a href="f1.png" class="lightbox-link">
+                    <img src="f1.png" alt="Project 3">
+                    <div class="overlay"><h3>F1 Concept</h3><p>Photoshop</p></div>
+                </a>
             </div>
             <div class="mosaic-item span-2-col reveal">
-                <a href="lac.PNG" class="lightbox-link"><img src="lac.PNG" alt="Project 4"></a>
+                <a href="lac.PNG" class="lightbox-link">
+                    <img src="lac.PNG" alt="Project 4">
+                    <div class="overlay"><h3>LAC Branding</h3><p>Illustrator</p></div>
+                </a>
+            </div>
+
+            <!-- New 5 Images -->
+            <div class="mosaic-item reveal">
+                <a href="new1.png" class="lightbox-link">
+                    <img src="new1.png" alt="Project 5">
+                    <div class="overlay"><h3>New Project 1</h3><p>Photoshop</p></div>
+                </a>
+            </div>
+            <div class="mosaic-item reveal">
+                <a href="new2.png" class="lightbox-link">
+                    <img src="new2.png" alt="Project 6">
+                    <div class="overlay"><h3>New Project 2</h3><p>Illustrator</p></div>
+                </a>
+            </div>
+            <div class="mosaic-item reveal">
+                <a href="new3.png" class="lightbox-link">
+                    <img src="new3.png" alt="Project 7">
+                    <div class="overlay"><h3>New Project 3</h3><p>Photoshop</p></div>
+                </a>
+            </div>
+            <div class="mosaic-item reveal">
+                <a href="new4.png" class="lightbox-link">
+                    <img src="new4.png" alt="Project 8">
+                    <div class="overlay"><h3>New Project 4</h3><p>Illustrator</p></div>
+                </a>
+            </div>
+            <div class="mosaic-item reveal">
+                <a href="new5.png" class="lightbox-link">
+                    <img src="new5.png" alt="Project 9">
+                    <div class="overlay"><h3>New Project 5</h3><p>Photoshop</p></div>
+                </a>
             </div>
         </div>
     </main>
-
-    <section class="video-section reveal">
-        <h2>Video Showcase</h2>
-        <div class="video-container">
-            <video controls poster="roverimg.PNG">
-                <source src="rover.mp4" type="video/mp4">
-            </video>
-        </div>
-    </section>
 
     <footer id="contact" class="reveal">
         <h2>Let's build something together.</h2>
