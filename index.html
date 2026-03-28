@@ -172,7 +172,7 @@
             100% { transform: translateY(100%); }
         }
 
-        /* Carousel Section */
+        /* --- CAROUSEL SECTION --- */
         .video-section {
             padding: 100px 0;
             overflow: hidden;
@@ -213,7 +213,7 @@
         .carousel-slide video {
             width: 100%;
             height: auto;
-            border-radius: 12px; /* MATCHING RADIUS */
+            border-radius: 12px;
             box-shadow: 0 30px 60px rgba(0,0,0,0.6);
             display: block;
             background: #000;
@@ -223,24 +223,38 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             color: #fff;
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            z-index: 100;
+            z-index: 1000; /* Increased to ensure hover works */
             display: flex;
             justify-content: center;
             align-items: center;
             transition: all 0.3s ease;
+            cursor: pointer !important;
+        }
+
+        .carousel-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carousel-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
         }
 
         .carousel-btn.prev { left: 40px; }
         .carousel-btn.next { right: 40px; }
 
-        /* Portfolio Section */
+        /* --- PORTFOLIO SECTION --- */
         .portfolio-section {
             padding: 120px 50px;
             max-width: 1800px;
@@ -258,7 +272,14 @@
             position: relative;
             overflow: hidden;
             background-color: #111;
-            border-radius: 12px; /* MATCHING RADIUS ADDED HERE */
+            border-radius: 12px; /* Matches video radius */
+        }
+
+        .mosaic-item a {
+            text-decoration: none; /* Fixes blue text color inheritance */
+            display: block;
+            width: 100%;
+            height: 100%;
         }
 
         .mosaic-item img {
@@ -284,8 +305,28 @@
             transition: opacity 0.6s ease;
         }
 
+        /* TEXT COLOR FIX: Explicitly White */
+        .mosaic-item .overlay h3 {
+            font-size: 1.5rem;
+            color: #ffffff !important; 
+            transform: translateY(15px);
+            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .mosaic-item .overlay p {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #cccccc !important;
+            margin-top: 5px;
+            transform: translateY(15px);
+            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transition-delay: 0.05s;
+        }
+
         .mosaic-item:hover img { transform: scale(1.05); filter: brightness(1) grayscale(0%); }
         .mosaic-item:hover .overlay { opacity: 1; }
+        .mosaic-item:hover .overlay h3, .mosaic-item:hover .overlay p { transform: translateY(0); }
 
         .reveal {
             opacity: 0;
@@ -339,7 +380,7 @@
         .lightbox-overlay.active { opacity: 1; pointer-events: all; }
         .lightbox-overlay.active img { transform: scale(1); }
 
-        /* --- MOBILE IMPROVEMENTS (Tablet & Phone) --- */
+        /* --- MOBILE IMPROVEMENTS --- */
         @media (max-width: 768px) {
             header { padding: 15px 20px; }
             .logo-text { font-size: 0.7rem; letter-spacing: 2px; }
@@ -348,31 +389,22 @@
             .hero h1 { font-size: 14vw; margin-bottom: 10px; }
             .hero p { font-size: 0.75rem; padding: 0 10px; }
 
-            /* Carousel Mobile Refinements */
             .video-section { padding: 60px 0; }
-            .carousel-slide { 
-                min-width: 85%; /* Larger active video on small screens */
-                margin: 0 5px;
-            }
-            .carousel-btn { 
-                width: 45px; height: 45px; 
-                background: rgba(5, 5, 5, 0.6); /* Higher contrast on mobile */
-            }
+            .carousel-slide { min-width: 85%; margin: 0 5px; }
+            .carousel-btn { width: 45px; height: 45px; background: rgba(5, 5, 5, 0.8); }
             .carousel-btn.prev { left: 10px; }
             .carousel-btn.next { right: 10px; }
 
-            /* Portfolio Mobile Refinements */
             .portfolio-section { padding: 60px 15px; }
             .mosaic-grid { 
                 grid-template-columns: repeat(2, 1fr); 
-                grid-auto-rows: 200px; /* Shorter rows for better scrolling */
+                grid-auto-rows: 200px; 
                 gap: 10px; 
             }
             .overlay { padding: 15px; }
             .overlay h3 { font-size: 1rem; }
             .overlay p { font-size: 0.6rem; }
             
-            /* Remove complex spans on very small screens to prevent weird gaps */
             .span-2-col, .span-2-row { grid-column: span 1; grid-row: span 1; }
             
             footer { padding: 80px 20px; }
@@ -525,7 +557,7 @@
             document.querySelector('.hero p').classList.add('active');
         }, 100);
 
-        // Intersection Observer
+        // Intersection Observer for scroll reveal
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -577,12 +609,14 @@
             });
         };
 
-        nextButton.addEventListener('click', () => {
+        nextButton.addEventListener('click', (e) => {
+            e.stopPropagation();
             currentSlideIndex = (currentSlideIndex + 1) % slides.length;
             updateCarousel();
         });
 
-        prevButton.addEventListener('click', () => {
+        prevButton.addEventListener('click', (e) => {
+            e.stopPropagation();
             currentSlideIndex = (currentSlideIndex - 1 + slides.length) % slides.length;
             updateCarousel();
         });
