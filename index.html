@@ -24,7 +24,7 @@
         }
 
         /* Interactive Elements */
-        a, button, .hover-target, .char, .mosaic-item, .carousel-slide {
+        a, button, .hover-target, .char, .mosaic-item {
             cursor: pointer;
         }
 
@@ -35,7 +35,11 @@
             font-weight: 800;
         }
 
-        /* Header */
+        h2 {
+            font-size: 2.5rem;
+        }
+
+        /* Sticky Header */
         header {
             position: fixed;
             top: 0;
@@ -58,8 +62,24 @@
             gap: 15px;
         }
 
-        .logo-img { height: 40px; }
-        .logo-text { color: #ffffff; font-size: 0.85rem; letter-spacing: 4px; }
+        .logo-img {
+            height: 40px;
+            width: auto;
+            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .logo-text {
+            color: #ffffff;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            transition: opacity 0.3s ease;
+        }
+
+        .logo:hover .logo-img {
+            transform: scale(1.05);
+        }
 
         nav a {
             color: #888;
@@ -67,25 +87,33 @@
             margin-left: 40px;
             font-size: 0.75rem;
             transition: color 0.4s ease;
+            text-transform: uppercase;
             letter-spacing: 2px;
         }
 
-        nav a:hover { color: #ffffff; }
+        nav a:hover {
+            color: #ffffff;
+        }
 
         /* Hero Section */
         .hero {
-            height: 80vh;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
+            padding: 0 20px;
+            position: relative;
         }
 
         .hero h1 {
             font-size: 8vw;
-            line-height: 1;
             margin-bottom: 20px;
+            line-height: 1;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .char {
@@ -111,120 +139,131 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* --- COVER FLOW VIDEO CAROUSEL --- */
-        .video-section {
-            padding: 100px 0;
-            position: relative;
-            perspective: 1500px;
+        .hero p {
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #666;
+            max-width: 600px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 2s ease-in-out;
+            transition-delay: 0.5s;
+        }
+        
+        .hero p.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Elegant Scroll Line */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.2);
             overflow: hidden;
         }
 
-        .section-header { text-align: center; margin-bottom: 40px; }
+        .scroll-indicator::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            animation: scrollLine 2.5s cubic-bezier(0.645, 0.045, 0.355, 1) infinite;
+        }
 
-        .carousel-container {
+        @keyframes scrollLine {
+            0% { transform: translateY(-100%); }
+            50% { transform: translateY(0); }
+            100% { transform: translateY(100%); }
+        }
+
+        /* Video Section & Carousel */
+        .video-section {
+            padding: 100px 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .carousel-wrapper {
             position: relative;
-            height: 650px; /* Adjusted for portrait video height */
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow: hidden;
+            background: #111;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
 
         .carousel-track {
-            position: relative;
-            width: 100%;
-            height: 100%;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .carousel-slide {
-            position: absolute;
-            width: 350px;
-            aspect-ratio: 9 / 16; /* Fits actual portrait video size */
-            background: #000;
-            border-radius: 24px;
-            overflow: hidden;
-            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-            opacity: 0;
-            transform: scale(0.5) translateX(0) rotateY(0);
-            filter: blur(10px);
-            z-index: 0;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.1);
+            min-width: 100%;
+            position: relative;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
         }
 
         .carousel-slide video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Ensures video fills the card */
-        }
-
-        /* States */
-        .carousel-slide.active {
-            opacity: 1;
-            transform: scale(1.1) translateX(0) rotateY(0);
-            filter: blur(0);
-            z-index: 10;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        .carousel-slide.prev-1 {
-            opacity: 0.6;
-            transform: scale(0.85) translateX(-380px) rotateY(25deg);
-            filter: blur(4px);
-            z-index: 5;
-        }
-
-        .carousel-slide.next-1 {
-            opacity: 0.6;
-            transform: scale(0.85) translateX(380px) rotateY(-25deg);
-            filter: blur(4px);
-            z-index: 5;
-        }
-
-        .carousel-slide.prev-2 {
-            opacity: 0.2;
-            transform: scale(0.7) translateX(-700px) rotateY(45deg);
-            z-index: 1;
-        }
-
-        .carousel-slide.next-2 {
-            opacity: 0.2;
-            transform: scale(0.7) translateX(700px) rotateY(-45deg);
-            z-index: 1;
-        }
-
-        /* Controls */
-        .carousel-controls {
             position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 20px;
-            z-index: 20;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            outline: none;
         }
 
         .carousel-btn {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            color: white;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(10, 10, 12, 0.5);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             width: 50px;
             height: 50px;
             border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
             display: flex;
             justify-content: center;
             align-items: center;
-            backdrop-filter: blur(10px);
-            transition: 0.3s;
-            pointer-events: all;
+            transition: all 0.3s ease;
         }
 
-        .carousel-btn:hover { background: #fff; color: #000; }
-        .carousel-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; }
+        .carousel-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-50%) scale(1.1);
+        }
 
-        /* Portfolio Grid */
+        .carousel-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .carousel-btn.prev { left: 20px; }
+        .carousel-btn.next { right: 20px; }
+
+        /* Portfolio Section */
         .portfolio-section {
             padding: 120px 50px;
             max-width: 1800px;
@@ -248,42 +287,154 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
-            filter: brightness(0.7);
+            transition: transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1), filter 1.2s ease;
+            filter: brightness(0.7) grayscale(20%);
         }
 
-        .mosaic-item:hover img { transform: scale(1.05); filter: brightness(1); }
         .span-2-col { grid-column: span 2; }
         .span-2-row { grid-row: span 2; }
 
         .overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 60%);
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            padding: 30px;
+            padding: 40px;
             opacity: 0;
-            transition: 0.5s;
+            transition: opacity 0.6s ease;
         }
 
-        .mosaic-item:hover .overlay { opacity: 1; }
+        .mosaic-item:hover img { 
+            transform: scale(1.05); 
+            filter: brightness(1) grayscale(0%); 
+        }
+        
+        .mosaic-item:hover .overlay { 
+            opacity: 1; 
+        }
 
+        .mosaic-item .overlay h3 {
+            font-size: 1.5rem;
+            color: #ffffff;
+            transform: translateY(15px);
+            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .mosaic-item .overlay p {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #aaa;
+            margin-top: 5px;
+            transform: translateY(15px);
+            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transition-delay: 0.05s;
+        }
+
+        .mosaic-item:hover .overlay h3,
+        .mosaic-item:hover .overlay p {
+            transform: translateY(0);
+        }
+
+        /* Scroll Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* Footer */
         footer {
             text-align: center;
-            padding: 100px;
-            border-top: 1px solid rgba(255,255,255,0.05);
+            padding: 120px 50px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        footer h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .contact-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+            padding-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .contact-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: #fff;
+            transition: width 0.4s ease;
+        }
+
+        .contact-link:hover::after {
+            width: 100%;
+        }
+
+        .copyright {
+            margin-top: 60px;
+            font-size: 0.7rem;
             color: #555;
-            font-size: 0.8rem;
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+
+        /* Lightbox */
+        .lightbox-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            z-index: 2000;
+        }
+
+        .lightbox-overlay img {
+            max-width: 85%;
+            max-height: 85vh;
+            object-fit: contain;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            transform: scale(0.95);
+            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .lightbox-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .lightbox-overlay.active img {
+            transform: scale(1);
         }
 
         @media (max-width: 768px) {
-            .carousel-slide { width: 280px; }
-            .carousel-slide.prev-1 { transform: scale(0.8) translateX(-220px); }
-            .carousel-slide.next-1 { transform: scale(0.8) translateX(220px); }
-            .portfolio-section { padding: 50px 20px; }
+            .hero h1 { font-size: 12vw; }
             .mosaic-grid { grid-template-columns: repeat(2, 1fr); }
+            .portfolio-section, .video-section { padding: 80px 20px; }
+            header { padding: 20px; }
+            .logo-text { font-size: 0.7rem; letter-spacing: 2px; }
+            .logo-img { height: 30px; }
+            footer h2 { font-size: 1.5rem; }
         }
     </style>
 </head>
@@ -292,126 +443,203 @@
 <header>
     <a href="#" class="logo">
         <img src="SG logo transparent.png" alt="SG Logo" class="logo-img">
-        <span class="logo-text">SKOEDTGRAPHICS</span>
+        <span class="logo-text">SkoedtGraphics</span>
     </a>
     <nav>
-        <a href="#work">Projects</a>
+        <a href="#work">Work</a>
         <a href="#contact">Contact</a>
     </nav>
 </header>
 
-<section class="hero">
-    <h1 id="hero-title">VISUAL INNOVATION</h1>
-    <p style="color: #666; letter-spacing: 2px;">CONCEPT & DESIGN</p>
+<section class="hero" id="about">
+    <h1>VISUAL INNOVATION</h1>
+    <p class="reveal">Concept, design & execution by Magnus Skødt Larsen</p>
+    <div class="scroll-indicator"></div>
 </section>
 
-<section class="video-section">
+<section class="video-section reveal">
     <div class="section-header">
-        <h2>Motion Works</h2>
+        <h2>Motion</h2>
     </div>
     
-    <div class="carousel-container">
-        <div class="carousel-track" id="carouselTrack">
-            <div class="carousel-slide"><video loop playsinline controls src="rover.mp4"></video></div>
-            <div class="carousel-slide"><video loop playsinline controls src="video2.mp4"></video></div>
-            <div class="carousel-slide"><video loop playsinline controls src="video3.mp4"></video></div>
-            <div class="carousel-slide"><video loop playsinline controls src="video4.mp4"></video></div>
-            <div class="carousel-slide"><video loop playsinline controls src="video5.mp4"></video></div>
+    <div class="carousel-wrapper">
+        <button class="carousel-btn prev">
+            <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        
+        <div class="carousel-track">
+            <div class="carousel-slide">
+                <video controls poster="roverimg.PNG">
+                    <source src="rover.mp4" type="video/mp4">
+                </video>
+            </div>
+            
+            <div class="carousel-slide">
+                <video controls poster="placeholder1.png">
+                    <source src="video2.mp4" type="video/mp4">
+                </video>
+            </div>
+
+            <div class="carousel-slide">
+                <video controls poster="placeholder2.png">
+                    <source src="video3.mp4" type="video/mp4">
+                </video>
+            </div>
         </div>
 
-        <div class="carousel-controls">
-            <button class="carousel-btn" id="prevBtn"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
-            <button class="carousel-btn" id="nextBtn"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
-        </div>
+        <button class="carousel-btn next">
+            <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
     </div>
 </section>
 
 <main class="portfolio-section" id="work">
+    <div class="section-header reveal">
+        <h2>Selected Works</h2>
+    </div>
     <div class="mosaic-grid">
-        <div class="mosaic-item span-2-col span-2-row">
-            <img src="aab2.png" alt="">
-            <div class="overlay"><h3>Player Poster</h3><p>Photoshop</p></div>
+        <div class="mosaic-item span-2-col span-2-row reveal">
+            <a href="aab2.png" class="lightbox-link">
+                <img src="aab2.png" alt="Player Poster">
+                <div class="overlay"><h3>Player Poster</h3><p>Photoshop & Indesign</p></div>
+            </a>
         </div>
-        <div class="mosaic-item span-2-row">
-            <img src="marley.png" alt="">
-            <div class="overlay"><h3>Marley Art</h3><p>Design</p></div>
+        <div class="mosaic-item span-2-row reveal">
+            <a href="marley.png" class="lightbox-link">
+                <img src="marley.png" alt="Marley Poster">
+                <div class="overlay"><h3>Marley Poster</h3><p>Photoshop</p></div>
+            </a>
         </div>
-        <div class="mosaic-item span-2-row">
-            <img src="f1.png" alt="">
-            <div class="overlay"><h3>F1 Concept</h3><p>Digital Art</p></div>
+        <div class="mosaic-item span-2-row reveal">
+            <a href="f1.png" class="lightbox-link">
+                <img src="f1.png" alt="F1 Poster">
+                <div class="overlay"><h3>F1 Poster</h3><p>Photoshop</p></div>
+            </a>
         </div>
-        <div class="mosaic-item span-2-col">
-            <img src="lac.PNG" alt="">
-            <div class="overlay"><h3>Lacoste</h3><p>Campaign</p></div>
+        <div class="mosaic-item span-2-col reveal">
+            <a href="lac.PNG" class="lightbox-link">
+                <img src="lac.PNG" alt="Lacoste Abribus">
+                <div class="overlay"><h3>Lacoste Abribus</h3><p>Photoshop</p></div>
+            </a>
+        </div>
+        <div class="mosaic-item span-2-col reveal">
+            <a href="aab1.png" class="lightbox-link">
+                <img src="aab1.png" alt="Matchday Poster">
+                <div class="overlay"><h3>Matchday Poster</h3><p>Photoshop</p></div>
+            </a>
+        </div>
+        <div class="mosaic-item span-2-row reveal">
+            <a href="final.png" class="lightbox-link">
+                <img src="final.png" alt="Movie Poster">
+                <div class="overlay"><h3>Movie Poster</h3><p>Illustrator</p></div>
+            </a>
+        </div>
+        <div class="mosaic-item reveal">
+            <a href="frontier.jpg" class="lightbox-link">
+                <img src="frontier.jpg" alt="Movie Poster">
+                <div class="overlay"><h3>Movie Poster</h3><p>Photoshop</p></div>
+            </a>
+        </div>
+        <div class="mosaic-item span-2-col reveal">
+            <a href="kaffe.png" class="lightbox-link">
+                <img src="kaffe.png" alt="Campaign Mockup">
+                <div class="overlay"><h3>Campaign Mockup</h3><p>Photoshop</p></div>
+            </a>
+        </div>
+        <div class="mosaic-item span-2-row reveal">
+            <a href="aab4.jpg" class="lightbox-link">
+                <img src="aab4.jpg" alt="Lineup Graphic">
+                <div class="overlay"><h3>Lineup Graphic</h3><p>Illustrator & PS</p></div>
+            </a>
         </div>
     </div>
 </main>
 
-<footer>
-    <p>&copy; 2026 SKOEDTGRAPHICS | ALL RIGHTS RESERVED</p>
+<footer id="contact" class="reveal">
+    <h2>Let's build something together.</h2>
+    <br><br>
+    <a href="mailto:magnusskoedtlarsen@hotmail.com" class="contact-link">Get in Touch</a>
+    <p class="copyright">&copy; 2026 SKOEDTGRAPHICS</p>
 </footer>
+
+<div class="lightbox-overlay" id="lightbox">
+    <img src="" alt="Full view">
+</div>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // Hero Text Animation
-        const title = document.getElementById('hero-title');
+        // Hero text animation
+        const title = document.querySelector('.hero h1');
         const text = title.textContent;
-        title.textContent = '';
+        title.textContent = ''; 
         [...text].forEach((char, i) => {
             const span = document.createElement('span');
             span.textContent = char === ' ' ? '\u00A0' : char;
             span.className = 'char';
-            span.style.transitionDelay = `${i * 0.05}s`;
+            span.style.transitionDelay = `${i * 0.04}s`;
             title.appendChild(span);
         });
-        setTimeout(() => document.querySelectorAll('.char').forEach(c => c.classList.add('active')), 100);
+        
+        setTimeout(() => {
+            document.querySelectorAll('.char').forEach(c => c.classList.add('active'));
+            document.querySelector('.hero p').classList.add('active');
+        }, 100);
 
-        // Carousel Logic
-        const track = document.getElementById('carouselTrack');
-        const slides = Array.from(track.children);
-        const nextBtn = document.getElementById('nextBtn');
-        const prevBtn = document.getElementById('prevBtn');
-        let currentIndex = 0;
-
-        function updateCarousel() {
-            slides.forEach((slide, index) => {
-                slide.className = 'carousel-slide';
-                const video = slide.querySelector('video');
-                
-                // Audio Handling: Only the active slide should play
-                if (index === currentIndex) {
-                    slide.classList.add('active');
-                    // We attempt to play. If it fails (blocked by browser), 
-                    // it will wait for the user to click the video controls.
-                    video.play().catch(() => {
-                        console.log("Autoplay with audio blocked. User interaction required.");
-                    });
-                } else {
-                    video.pause();
-                    video.currentTime = 0; // Reset video when not active
-                    
-                    if (index === (currentIndex + 1) % slides.length) slide.classList.add('next-1');
-                    else if (index === (currentIndex - 1 + slides.length) % slides.length) slide.classList.add('prev-1');
-                    else if (index === (currentIndex + 2) % slides.length) slide.classList.add('next-2');
-                    else if (index === (currentIndex - 2 + slides.length) % slides.length) slide.classList.add('prev-2');
+        // Scroll reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); 
                 }
             });
-        }
+        }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
+        
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        nextBtn.addEventListener('click', () => {
-            currentIndex = (currentIndex + 1) % slides.length;
-            updateCarousel();
+        // Lightbox functionality
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = lightbox.querySelector('img');
+
+        document.querySelectorAll('.lightbox-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                lightboxImg.src = link.href;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden'; 
+            });
         });
 
-        prevBtn.addEventListener('click', () => {
-            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-            updateCarousel();
+        lightbox.addEventListener('click', () => {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto'; 
+            setTimeout(() => lightboxImg.src = '', 400); 
         });
 
-        // Initialize carousel
-        updateCarousel();
+        // Video Carousel functionality
+        const track = document.querySelector('.carousel-track');
+        const slides = Array.from(track.children);
+        const nextButton = document.querySelector('.carousel-btn.next');
+        const prevButton = document.querySelector('.carousel-btn.prev');
+        const allVideos = document.querySelectorAll('.carousel-slide video');
+        let currentSlideIndex = 0;
+
+        const updateSlidePosition = () => {
+            track.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+            // Pause all videos when sliding to prevent overlapping audio
+            allVideos.forEach(video => video.pause());
+        };
+
+        nextButton.addEventListener('click', () => {
+            currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+            updateSlidePosition();
+        });
+
+        prevButton.addEventListener('click', () => {
+            currentSlideIndex = (currentSlideIndex - 1 + slides.length) % slides.length;
+            updateSlidePosition();
+        });
     });
 </script>
-
 </body>
 </html>
