@@ -400,6 +400,39 @@ nav a:hover { color: #ffffff; }
 
 .reveal.active { opacity: 1; transform: translateY(0); }
 
+/* --- ABOUT SECTION --- */
+.about-section {
+  padding: 120px 50px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.about-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.about-title {
+  font-size: 1.2rem;
+  letter-spacing: 6px;
+  color: #ffffff;
+  margin-bottom: 30px;
+}
+
+.about-text {
+  color: #888;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  letter-spacing: 0.5px;
+}
+
+.about-text b {
+  color: #fff;
+  font-weight: 600;
+}
+
 /* --- FIXED FOOTER & BUTTON --- */
 footer {
   text-align: center;
@@ -498,6 +531,9 @@ footer {
   .overlay p { font-size: 0.6rem; }
 
   .span-2-col, .span-2-row { grid-column: span 1; grid-row: span 1; }
+
+  .about-section { padding: 60px 25px; }
+  .about-content { grid-template-columns: 1fr; gap: 40px; }
 
   footer { padding: 80px 20px; }
   footer h2 { font-size: 1.2rem !important; }
@@ -638,6 +674,31 @@ footer {
   </div>
 </main>
 
+<section class="about-section reveal">
+  <div class="section-header reveal">
+    <h2>The Visionary</h2>
+  </div>
+  <div class="about-content">
+    <div class="about-column">
+      <h3 class="about-title">Magnus Skødt Larsen</h3>
+      <p class="about-text">
+        Based in Denmark, I specialize in crafting <b>high-impact visual narratives</b>. 
+        My work sits at the intersection of technical precision and artistic exploration, 
+        focusing on graphic design and professional video post-production.
+      </p>
+    </div>
+    <div class="about-column">
+      <h3 class="about-title">The Philosophy</h3>
+      <p class="about-text">
+        Every project is an opportunity to push the boundaries of <b>visual innovation</b>. 
+        Whether it’s a minimalist poster or a complex edit, I believe in a philosophy 
+        of "Less, but better"—stripping away the noise to let the core message shine 
+        with clarity and power.
+      </p>
+    </div>
+  </div>
+</section>
+
 <footer id="contact" class="reveal">
   <h2>Let's build something together.</h2>
   <br><br>
@@ -652,57 +713,34 @@ footer {
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ── AMBIENT LIGHT ─────────────────────────────────────────
-     A light source sits just outside the top-left corner of the
-     viewport. Its position drifts slowly along the outside edge,
-     so the cone of light sweeping across the page shifts gently —
-     like sunlight through a window slowly changing angle.
-  ──────────────────────────────────────────────────────────── */
+  /* ── AMBIENT LIGHT ───────────────────────────────────────── */
   const bgLight = document.getElementById('bg-light');
-
   let lastTime = null;
   let elapsed = 0;
-
-  // The light origin drifts just outside the viewport.
-  // x swings from ~-25% to ~5% (off-screen left edge area)
-  // y swings from ~-30% to ~-5% (above the top edge)
-  // Slow, lazy frequencies so it feels like shifting daylight.
-  const FREQ_X = 0.000038;   // radians/ms — full cycle ~46 min
-  const FREQ_Y = 0.000027;   // slightly different so motion is never repetitive
+  const FREQ_X = 0.000038;   
+  const FREQ_Y = 0.000027;   
   const PHASE_Y = Math.PI * 0.6;
 
   function animateLight(ts) {
     if (!lastTime) lastTime = ts;
     elapsed += ts - lastTime;
     lastTime = ts;
-
-    // Source position: outside top-left corner, drifting along the edge
-    const srcX = -18 + 14 * Math.sin(FREQ_X * elapsed);          // -32% … -4%
-    const srcY = -22 + 12 * Math.sin(FREQ_Y * elapsed + PHASE_Y); // -34% … -10%
-
-    // One large cone from the off-screen source
-    // + a softer secondary bounce off the top edge for realism
+    const srcX = -18 + 14 * Math.sin(FREQ_X * elapsed);          
+    const srcY = -22 + 12 * Math.sin(FREQ_Y * elapsed + PHASE_Y); 
     bgLight.style.background = [
-      // Primary cone — warm white, wide spread
       `radial-gradient(ellipse 140vw 110vh at ${srcX.toFixed(1)}% ${srcY.toFixed(1)}%, ` +
         `rgba(255,252,245,0.11) 0%, ` +
         `rgba(255,252,245,0.05) 25%, ` +
         `rgba(255,250,240,0.015) 55%, ` +
         `transparent 75%)`,
-
-      // Secondary spill — slightly cooler, hugs the top edge
       `radial-gradient(ellipse 90vw 60vh at ${(srcX + 8).toFixed(1)}% ${(srcY - 5).toFixed(1)}%, ` +
         `rgba(210,225,255,0.045) 0%, ` +
         `rgba(210,225,255,0.015) 40%, ` +
         `transparent 65%)`
     ].join(', ');
-
     requestAnimationFrame(animateLight);
   }
-
   requestAnimationFrame(animateLight);
-  /* ── END AMBIENT LIGHT ─────────────────────────────────── */
-
 
   /* ── HERO TEXT ANIMATION ─────────────────────────────── */
   const words = document.querySelectorAll('.hero h1 .word');
@@ -760,10 +798,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const containerWidth = document.querySelector('.carousel-container').offsetWidth;
     const slideWidth = slides[0].offsetWidth;
     const gap = window.innerWidth <= 768 ? 10 : 20;
-
     const offset = (containerWidth / 2) - (slideWidth / 2) - (currentSlideIndex * (slideWidth + gap));
     track.style.transform = `translateX(${offset}px)`;
-
     slides.forEach((slide, index) => {
       const video = slide.querySelector('video');
       if (index === currentSlideIndex) {
