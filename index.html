@@ -618,63 +618,49 @@ footer h2 { font-size: 1.2rem !important; }
 document.addEventListener('DOMContentLoaded', () => {
 
   /* ── AMBIENT LIGHT ─────────────────────────────────────────
-     Two overlapping glows drift on independent Lissajous paths.
-     Frequencies are irrational relative to each other so the
-     pattern never exactly repeats — always feels organic.
+     A light source sits just outside the top-left corner of the
+     viewport. Its position drifts slowly along the outside edge,
+     so the cone of light sweeping across the page shifts gently —
+     like sunlight through a window slowly changing angle.
   ──────────────────────────────────────────────────────────── */
   const bgLight = document.getElementById('bg-light');
-
-  // Glow definitions: size, color, speed multipliers, phase offsets
-  const glows = [
-    {
-      rx: 55, ry: 42,           // ellipse radii in vw/vh
-      color: '255,255,255',
-      alpha: 0.038,
-      alphaInner: 0.022,
-      freqX: 0.00011,           // radians per ms
-      freqY: 0.000073,
-      phaseX: 0,
-      phaseY: Math.PI / 3,
-      rangeX: 38,               // % of viewport to roam
-      rangeY: 34,
-      cx: 50, cy: 45            // centre anchor %
-    },
-    {
-      rx: 40, ry: 30,
-      color: '180,200,255',
-      alpha: 0.022,
-      alphaInner: 0.012,
-      freqX: 0.000083,
-      freqY: 0.000127,
-      phaseX: Math.PI,
-      phaseY: Math.PI * 0.7,
-      rangeX: 30,
-      rangeY: 28,
-      cx: 52, cy: 52
-    }
-  ];
 
   let lastTime = null;
   let elapsed = 0;
 
-  function buildGradientString(glow, t) {
-    const x = glow.cx + glow.rangeX * Math.sin(glow.freqX * t + glow.phaseX);
-    const y = glow.cy + glow.rangeY * Math.sin(glow.freqY * t + glow.phaseY);
-    return (
-      `radial-gradient(ellipse ${glow.rx}vw ${glow.ry}vh at ${x.toFixed(2)}% ${y.toFixed(2)}%, ` +
-      `rgba(${glow.color},${glow.alphaInner}) 0%, ` +
-      `rgba(${glow.color},${glow.alpha}) 30%, ` +
-      `transparent 70%)`
-    );
-  }
+  // The light origin drifts just outside the viewport.
+  // x swings from ~-25% to ~5% (off-screen left edge area)
+  // y swings from ~-30% to ~-5% (above the top edge)
+  // Slow, lazy frequencies so it feels like shifting daylight.
+  const FREQ_X = 0.000038;   // radians/ms — full cycle ~46 min
+  const FREQ_Y = 0.000027;   // slightly different so motion is never repetitive
+  const PHASE_Y = Math.PI * 0.6;
 
   function animateLight(ts) {
     if (!lastTime) lastTime = ts;
     elapsed += ts - lastTime;
     lastTime = ts;
 
-    // Compose multiple gradients separated by comma
-    bgLight.style.background = glows.map(g => buildGradientString(g, elapsed)).join(', ');
+    // Source position: outside top-left corner, drifting along the edge
+    const srcX = -18 + 14 * Math.sin(FREQ_X * elapsed);          // -32% … -4%
+    const srcY = -22 + 12 * Math.sin(FREQ_Y * elapsed + PHASE_Y); // -34% … -10%
+
+    // One large cone from the off-screen source
+    // + a softer secondary bounce off the top edge for realism
+    bgLight.style.background = [
+      // Primary cone — warm white, wide spread
+      `radial-gradient(ellipse 140vw 110vh at ${srcX.toFixed(1)}% ${srcY.toFixed(1)}%, ` +
+        `rgba(255,252,245,0.11) 0%, ` +
+        `rgba(255,252,245,0.05) 25%, ` +
+        `rgba(255,250,240,0.015) 55%, ` +
+        `transparent 75%)`,
+
+      // Secondary spill — slightly cooler, hugs the top edge
+      `radial-gradient(ellipse 90vw 60vh at ${(srcX + 8).toFixed(1)}% ${(srcY - 5).toFixed(1)}%, ` +
+        `rgba(210,225,255,0.045) 0%, ` +
+        `rgba(210,225,255,0.015) 40%, ` +
+        `transparent 65%)`
+    ].join(', ');
 
     requestAnimationFrame(animateLight);
   }
