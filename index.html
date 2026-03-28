@@ -1,687 +1,774 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkoedtGraphics | Portfolio</title>
-    
-    <style>
-        /* CSS Reset & Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            cursor: default;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkoedtGraphics | Portfolio</title>
 
-        body {
-            background-color: #050505;
-            color: #f0f0f0;
-            line-height: 1.6;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
+<style>
+/* CSS Reset & Base Styles */
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Helvetica Neue', Arial, sans-serif;
+cursor: default;
+}
 
-        /* Interactive Elements */
-        a, button, .hover-target, .char, .mosaic-item {
-            cursor: pointer;
-        }
+body {
+background-color: #050505;
+color: #f0f0f0;
+line-height: 1.6;
+overflow-x: hidden;
+-webkit-font-smoothing: antialiased;
+}
 
-        /* Typography */
-        h1, h2, h3 {
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 800;
-        }
+/* ── AMBIENT LIGHT ─────────────────────────────────────────── */
+#bg-light {
+position: fixed;
+top: 0; left: 0;
+width: 100%; height: 100%;
+pointer-events: none;
+z-index: 0;
+will-change: background;
+}
+/* ── END AMBIENT LIGHT ─────────────────────────────────────── */
 
-        h2 {
-            font-size: 2.5rem;
-        }
+/* Everything else sits above the light */
+header, section, main, footer, .lightbox-overlay { position: relative; z-index: 1; }
 
-        /* Sticky Header */
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 25px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(5, 5, 5, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
+/* Interactive Elements */
+a, button, .hover-target, .char, .mosaic-item {
+cursor: pointer;
+}
 
-        .logo {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            gap: 15px;
-            transition: all 0.4s ease;
-        }
+/* Typography */
+h1, h2, h3 {
+text-transform: uppercase;
+letter-spacing: 2px;
+font-weight: 800;
+}
 
-        .logo-img {
-            height: 40px;
-            width: auto;
-            transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-            filter: drop-shadow(0 0 0px rgba(255,255,255,0));
-        }
+h2 {
+font-size: 2.5rem;
+}
 
-        .logo-text {
-            color: #ffffff;
-            font-size: 0.85rem;
-            font-weight: 700;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            transition: color 0.4s ease;
-        }
+/* Sticky Header */
+header {
+position: fixed;
+top: 0;
+width: 100%;
+padding: 25px 50px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+background: rgba(5, 5, 5, 0.7);
+backdrop-filter: blur(20px);
+-webkit-backdrop-filter: blur(20px);
+z-index: 1000;
+border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
 
-        .logo:hover .logo-img {
-            transform: scale(1.1) rotate(-3deg);
-            filter: drop-shadow(0 0 8px rgba(255,255,255,0.3));
-        }
+.logo {
+display: flex;
+align-items: center;
+text-decoration: none;
+gap: 15px;
+transition: all 0.4s ease;
+}
 
-        .logo:hover .logo-text {
-            color: #aaa;
-        }
+.logo-img {
+height: 40px;
+width: auto;
+transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+filter: drop-shadow(0 0 0px rgba(255,255,255,0));
+}
 
-        nav a {
-            color: #888;
-            text-decoration: none;
-            margin-left: 40px;
-            font-size: 0.75rem;
-            transition: color 0.4s ease;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
+.logo-text {
+color: #ffffff;
+font-size: 0.85rem;
+font-weight: 700;
+letter-spacing: 4px;
+text-transform: uppercase;
+transition: color 0.4s ease;
+}
 
-        nav a:hover { color: #ffffff; }
+.logo:hover .logo-img {
+transform: scale(1.1) rotate(-3deg);
+filter: drop-shadow(0 0 8px rgba(255,255,255,0.3));
+}
 
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 0 20px;
-            position: relative;
-        }
+.logo:hover .logo-text {
+color: #aaa;
+}
 
-        .hero h1 {
-            font-size: 8vw;
-            margin-bottom: 20px;
-            line-height: 1;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0 0.3em;
-        }
+nav a {
+color: #888;
+text-decoration: none;
+margin-left: 40px;
+font-size: 0.75rem;
+transition: color 0.4s ease;
+text-transform: uppercase;
+letter-spacing: 2px;
+}
 
-        .hero h1 .word {
-            display: inline-block;
-            white-space: nowrap;
-        }
+nav a:hover { color: #ffffff; }
 
-        .char {
-            display: inline-block;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 1s cubic-bezier(0.2, 0.6, 0.2, 1);
-        }
+/* Hero Section */
+.hero {
+height: 100vh;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+text-align: center;
+padding: 0 20px;
+position: relative;
+}
 
-        .char.active {
-            opacity: 1;
-            transform: translateY(0);
-            background: linear-gradient(120deg, #fff, #999, #fff);
-            background-size: 200% 200%;
-            animation: metallicShine 8s ease-in-out infinite;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+.hero h1 {
+font-size: 8vw;
+margin-bottom: 20px;
+line-height: 1;
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+gap: 0 0.3em;
+}
 
-        @keyframes metallicShine {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+.hero h1 .word {
+display: inline-block;
+white-space: nowrap;
+}
 
-        .hero p {
-            font-size: 0.9rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: #666;
-            max-width: 600px;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 2s ease-in-out;
-            transition-delay: 0.5s;
-        }
-        
-        .hero p.active { opacity: 1; transform: translateY(0); }
+.char {
+display: inline-block;
+opacity: 0;
+transform: translateY(30px);
+transition: all 1s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
 
-        .scroll-indicator {
-            position: absolute;
-            bottom: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 1px;
-            height: 60px;
-            background: rgba(255, 255, 255, 0.2);
-            overflow: hidden;
-        }
+.char.active {
+opacity: 1;
+transform: translateY(0);
+background: linear-gradient(120deg, #fff, #999, #fff);
+background-size: 200% 200%;
+animation: metallicShine 8s ease-in-out infinite;
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+}
 
-        .scroll-indicator::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: #fff;
-            animation: scrollLine 2.5s cubic-bezier(0.645, 0.045, 0.355, 1) infinite;
-        }
+@keyframes metallicShine {
+0% { background-position: 0% 50%; }
+50% { background-position: 100% 50%; }
+100% { background-position: 0% 50%; }
+}
 
-        @keyframes scrollLine {
-            0% { transform: translateY(-100%); }
-            50% { transform: translateY(0); }
-            100% { transform: translateY(100%); }
-        }
+.hero p {
+font-size: 0.9rem;
+letter-spacing: 3px;
+text-transform: uppercase;
+color: #666;
+max-width: 600px;
+opacity: 0;
+transform: translateY(20px);
+transition: all 2s ease-in-out;
+transition-delay: 0.5s;
+}
 
-        /* Carousel Section */
-        .video-section {
-            padding: 100px 0;
-            overflow: hidden;
-            width: 100%;
-        }
+.hero p.active { opacity: 1; transform: translateY(0); }
 
-        .carousel-container {
-            position: relative;
-            width: 100%;
-            max-width: 100vw;
-        }
+.scroll-indicator {
+position: absolute;
+bottom: 50px;
+left: 50%;
+transform: translateX(-50%);
+width: 1px;
+height: 60px;
+background: rgba(255, 255, 255, 0.2);
+overflow: hidden;
+}
 
-        .carousel-track {
-            display: flex;
-            align-items: center;
-            transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
-            will-change: transform;
-        }
+.scroll-indicator::after {
+content: '';
+position: absolute;
+top: 0; left: 0;
+width: 100%; height: 100%;
+background: #fff;
+animation: scrollLine 2.5s cubic-bezier(0.645, 0.045, 0.355, 1) infinite;
+}
 
-        .carousel-slide {
-            min-width: 70%;
-            margin: 0 10px;
-            position: relative;
-            transition: all 0.8s ease;
-            opacity: 0.15;
-            transform: scale(0.85);
-            filter: blur(4px) grayscale(100%);
-            pointer-events: none;
-        }
+@keyframes scrollLine {
+0% { transform: translateY(-100%); }
+50% { transform: translateY(0); }
+100% { transform: translateY(100%); }
+}
 
-        .carousel-slide.active {
-            opacity: 1;
-            transform: scale(1);
-            filter: blur(0) grayscale(0%);
-            pointer-events: all;
-        }
+/* Carousel Section */
+.video-section {
+padding: 100px 0;
+overflow: hidden;
+width: 100%;
+}
 
-        .carousel-slide video {
-            width: 100%;
-            height: auto;
-            border-radius: 12px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-            display: block;
-            background: #000;
-        }
+.carousel-container {
+position: relative;
+width: 100%;
+max-width: 100vw;
+}
 
-        .carousel-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.3s ease;
-            cursor: pointer !important;
-        }
+.carousel-track {
+display: flex;
+align-items: center;
+transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+will-change: transform;
+}
 
-        .carousel-btn:hover {
-            background: rgba(255, 255, 255, 0.25);
-            transform: translateY(-50%) scale(1.1);
-        }
+.carousel-slide {
+min-width: 70%;
+margin: 0 10px;
+position: relative;
+transition: all 0.8s ease;
+opacity: 0.15;
+transform: scale(0.85);
+filter: blur(4px) grayscale(100%);
+pointer-events: none;
+}
 
-        .carousel-btn svg {
-            width: 24px;
-            height: 24px;
-            fill: none;
-            stroke: currentColor;
-            stroke-width: 2;
-        }
+.carousel-slide.active {
+opacity: 1;
+transform: scale(1);
+filter: blur(0) grayscale(0%);
+pointer-events: all;
+}
 
-        .carousel-btn.prev { left: 40px; }
-        .carousel-btn.next { right: 40px; }
+.carousel-slide video {
+width: 100%;
+height: auto;
+border-radius: 12px;
+box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+display: block;
+background: #000;
+}
 
-        /* Portfolio Section */
-        .portfolio-section {
-            padding: 120px 50px;
-            max-width: 1800px;
-            margin: 0 auto;
-        }
+.carousel-btn {
+position: absolute;
+top: 50%;
+transform: translateY(-50%);
+background: rgba(255, 255, 255, 0.1);
+backdrop-filter: blur(15px);
+border: 1px solid rgba(255, 255, 255, 0.2);
+color: #fff;
+width: 60px;
+height: 60px;
+border-radius: 50%;
+z-index: 1000;
+display: flex;
+justify-content: center;
+align-items: center;
+transition: all 0.3s ease;
+cursor: pointer !important;
+}
 
-        .mosaic-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-auto-rows: 350px;
-            gap: 15px;
-        }
+.carousel-btn:hover {
+background: rgba(255, 255, 255, 0.25);
+transform: translateY(-50%) scale(1.1);
+}
 
-        .mosaic-item {
-            position: relative;
-            overflow: hidden;
-            background-color: #111;
-            border-radius: 12px;
-        }
+.carousel-btn svg {
+width: 24px;
+height: 24px;
+fill: none;
+stroke: currentColor;
+stroke-width: 2;
+}
 
-        .mosaic-item a {
-            text-decoration: none;
-            display: block;
-            width: 100%;
-            height: 100%;
-        }
+.carousel-btn.prev { left: 40px; }
+.carousel-btn.next { right: 40px; }
 
-        .mosaic-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1), filter 1.2s ease;
-            filter: brightness(0.7) grayscale(20%);
-        }
+/* Portfolio Section */
+.portfolio-section {
+padding: 120px 50px;
+max-width: 1800px;
+margin: 0 auto;
+}
 
-        .span-2-col { grid-column: span 2; }
-        .span-2-row { grid-row: span 2; }
+.mosaic-grid {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+grid-auto-rows: 350px;
+gap: 15px;
+}
 
-        .overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 60%);
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 40px;
-            opacity: 0;
-            transition: opacity 0.6s ease;
-        }
+.mosaic-item {
+position: relative;
+overflow: hidden;
+background-color: #111;
+border-radius: 12px;
+}
 
-        .mosaic-item .overlay h3 {
-            font-size: 1.5rem;
-            color: #ffffff !important; 
-            transform: translateY(15px);
-            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
+.mosaic-item a {
+text-decoration: none;
+display: block;
+width: 100%;
+height: 100%;
+}
 
-        .mosaic-item .overlay p {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #cccccc !important;
-            margin-top: 5px;
-            transform: translateY(15px);
-            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-            transition-delay: 0.05s;
-        }
+.mosaic-item img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+transition: transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1), filter 1.2s ease;
+filter: brightness(0.7) grayscale(20%);
+}
 
-        .mosaic-item:hover img { transform: scale(1.05); filter: brightness(1) grayscale(0%); }
-        .mosaic-item:hover .overlay { opacity: 1; }
-        .mosaic-item:hover .overlay h3, .mosaic-item:hover .overlay p { transform: translateY(0); }
+.span-2-col { grid-column: span 2; }
+.span-2-row { grid-row: span 2; }
 
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
+.overlay {
+position: absolute;
+inset: 0;
+background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 60%);
+display: flex;
+flex-direction: column;
+justify-content: flex-end;
+padding: 40px;
+opacity: 0;
+transition: opacity 0.6s ease;
+}
 
-        .reveal.active { opacity: 1; transform: translateY(0); }
+.mosaic-item .overlay h3 {
+font-size: 1.5rem;
+color: #ffffff !important;
+transform: translateY(15px);
+transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
 
-        /* --- FIXED FOOTER & BUTTON --- */
-        footer {
-            text-align: center;
-            padding: 120px 50px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
+.mosaic-item .overlay p {
+font-size: 0.75rem;
+text-transform: uppercase;
+letter-spacing: 2px;
+color: #cccccc !important;
+margin-top: 5px;
+transform: translateY(15px);
+transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+transition-delay: 0.05s;
+}
 
-        .contact-link {
-            display: inline-block;
-            color: #fff;
-            text-decoration: none;
-            font-size: 0.8rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            font-weight: 700;
-            padding: 18px 40px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50px; /* Pill shape */
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            margin-bottom: 50px; /* Space above copyright */
-        }
+.mosaic-item:hover img { transform: scale(1.05); filter: brightness(1) grayscale(0%); }
+.mosaic-item:hover .overlay { opacity: 1; }
+.mosaic-item:hover .overlay h3, .mosaic-item:hover .overlay p { transform: translateY(0); }
 
-        .contact-link:hover {
-            background-color: #ffffff;
-            color: #000000;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
-            border-color: #ffffff;
-        }
+.reveal {
+opacity: 0;
+transform: translateY(40px);
+transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
 
-        .copyright {
-            display: block;
-            font-size: 0.65rem;
-            color: #444;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
+.reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* Lightbox Styles */
-        .lightbox-overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
-            backdrop-filter: blur(10px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.4s ease;
-            z-index: 2000;
-        }
+/* --- FIXED FOOTER & BUTTON --- */
+footer {
+text-align: center;
+padding: 120px 50px;
+border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
 
-        .lightbox-overlay img {
-            max-width: 85%;
-            max-height: 85vh;
-            border-radius: 8px;
-            object-fit: contain;
-            transform: scale(0.95);
-            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
+.contact-link {
+display: inline-block;
+color: #fff;
+text-decoration: none;
+font-size: 0.8rem;
+letter-spacing: 3px;
+text-transform: uppercase;
+font-weight: 700;
+padding: 18px 40px;
+border: 1px solid rgba(255, 255, 255, 0.3);
+border-radius: 50px;
+transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+margin-bottom: 50px;
+}
 
-        .lightbox-overlay.active { opacity: 1; pointer-events: all; }
-        .lightbox-overlay.active img { transform: scale(1); }
+.contact-link:hover {
+background-color: #ffffff;
+color: #000000;
+transform: translateY(-5px);
+box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+border-color: #ffffff;
+}
 
-        /* --- MOBILE IMPROVEMENTS --- */
-        @media (max-width: 768px) {
-            header { padding: 15px 20px; }
-            .logo-text { font-size: 0.7rem; letter-spacing: 2px; }
-            nav a { margin-left: 15px; font-size: 0.65rem; }
+.copyright {
+display: block;
+font-size: 0.65rem;
+color: #444;
+letter-spacing: 2px;
+text-transform: uppercase;
+}
 
-            h2 { font-size: 1.6rem !important; }
+/* Lightbox Styles */
+.lightbox-overlay {
+position: fixed;
+top: 0; left: 0;
+width: 100%; height: 100%;
+background: rgba(0,0,0,0.95);
+backdrop-filter: blur(10px);
+display: flex;
+justify-content: center;
+align-items: center;
+opacity: 0;
+pointer-events: none;
+transition: opacity 0.4s ease;
+z-index: 2000;
+}
 
-            .hero h1 { font-size: 14vw; flex-direction: column; align-items: center; }
-            .hero h1 .word { display: block; width: 100%; }
+.lightbox-overlay img {
+max-width: 85%;
+max-height: 85vh;
+border-radius: 8px;
+object-fit: contain;
+transform: scale(0.95);
+transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
 
-            .hero p { font-size: 0.75rem; padding: 0 10px; }
+.lightbox-overlay.active { opacity: 1; pointer-events: all; }
+.lightbox-overlay.active img { transform: scale(1); }
 
-            .video-section { padding: 40px 0; }
-            .carousel-slide { min-width: 85%; margin: 0 5px; }
-            .carousel-btn { width: 45px; height: 45px; background: rgba(5, 5, 5, 0.8); }
-            .carousel-btn.prev { left: 10px; }
-            .carousel-btn.next { right: 10px; }
+/* --- MOBILE IMPROVEMENTS --- */
+@media (max-width: 768px) {
+header { padding: 15px 20px; }
+.logo-text { font-size: 0.7rem; letter-spacing: 2px; }
+nav a { margin-left: 15px; font-size: 0.65rem; }
 
-            .portfolio-section { padding: 30px 15px; }
-            .mosaic-grid { 
-                grid-template-columns: repeat(2, 1fr); 
-                grid-auto-rows: 200px; 
-                gap: 10px; 
-            }
-            .overlay { padding: 15px; }
-            .overlay h3 { font-size: 1rem; }
-            .overlay p { font-size: 0.6rem; }
-            
-            .span-2-col, .span-2-row { grid-column: span 1; grid-row: span 1; }
-            
-            footer { padding: 80px 20px; }
-            footer h2 { font-size: 1.2rem !important; }
-            .contact-link { padding: 14px 30px; font-size: 0.7rem; }
-        }
-    </style>
+h2 { font-size: 1.6rem !important; }
+
+.hero h1 { font-size: 14vw; flex-direction: column; align-items: center; }
+.hero h1 .word { display: block; width: 100%; }
+
+.hero p { font-size: 0.75rem; padding: 0 10px; }
+
+.video-section { padding: 40px 0; }
+.carousel-slide { min-width: 85%; margin: 0 5px; }
+.carousel-btn { width: 45px; height: 45px; background: rgba(5, 5, 5, 0.8); }
+.carousel-btn.prev { left: 10px; }
+.carousel-btn.next { right: 10px; }
+
+.portfolio-section { padding: 30px 15px; }
+.mosaic-grid {
+grid-template-columns: repeat(2, 1fr);
+grid-auto-rows: 200px;
+gap: 10px;
+}
+.overlay { padding: 15px; }
+.overlay h3 { font-size: 1rem; }
+.overlay p { font-size: 0.6rem; }
+
+.span-2-col, .span-2-row { grid-column: span 1; grid-row: span 1; }
+
+footer { padding: 80px 20px; }
+footer h2 { font-size: 1.2rem !important; }
+.contact-link { padding: 14px 30px; font-size: 0.7rem; }
+}
+</style>
 </head>
 <body>
 
+<!-- Ambient background light — driven by JS below -->
+<div id="bg-light"></div>
+
 <header>
-    <a href="#" class="logo">
-        <img src="SG logo transparent.png" alt="SG Logo" class="logo-img">
-        <span class="logo-text">SkoedtGraphics</span>
-    </a>
-    <nav>
-        <a href="#work">Work</a>
-        <a href="#contact">Contact</a>
-    </nav>
+<a href="#" class="logo">
+<img src="SG logo transparent.png" alt="SG Logo" class="logo-img">
+<span class="logo-text">SkoedtGraphics</span>
+</a>
+<nav>
+<a href="#work">Work</a>
+<a href="#contact">Contact</a>
+</nav>
 </header>
 
 <section class="hero" id="about">
-    <h1>
-        <span class="word">Visual</span>
-        <span class="word">Innovation</span>
-    </h1>
-    <p class="reveal">Concept, design & execution by Magnus Skødt Larsen</p>
-    <div class="scroll-indicator"></div>
+<h1>
+<span class="word">Visual</span>
+<span class="word">Innovation</span>
+</h1>
+<p class="reveal">Concept, design & execution by Magnus Skødt Larsen</p>
+<div class="scroll-indicator"></div>
 </section>
 
 <section class="video-section reveal">
-    <div class="section-header" style="text-align: center; margin-bottom: 30px;">
-        <h2>Motion Editing</h2>
-    </div>
-    
-    <div class="carousel-container">
-        <button class="carousel-btn prev">
-            <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        
-        <div class="carousel-track">
-            <div class="carousel-slide">
-                <video controls poster="roverimg.PNG">
-                    <source src="rover.mp4" type="video/mp4">
-                </video>
-            </div>
-            <div class="carousel-slide">
-                <video controls poster="lacthumb.PNG">
-                    <source src="lacvid.mp4" type="video/mp4">
-                </video>
-            </div>
-            <div class="carousel-slide">
-                <video controls poster="placeholder2.png">
-                    <source src="video3.mp4" type="video/mp4">
-                </video>
-            </div>
-        </div>
+<div class="section-header" style="text-align: center; margin-bottom: 30px;">
+<h2>Motion Editing</h2>
+</div>
 
-        <button class="carousel-btn next">
-            <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
-        </button>
-    </div>
+<div class="carousel-container">
+<button class="carousel-btn prev">
+<svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+</button>
+
+<div class="carousel-track">
+<div class="carousel-slide">
+<video controls poster="roverimg.PNG">
+<source src="rover.mp4" type="video/mp4">
+</video>
+</div>
+<div class="carousel-slide">
+<video controls poster="lacthumb.PNG">
+<source src="lacvid.mp4" type="video/mp4">
+</video>
+</div>
+<div class="carousel-slide">
+<video controls poster="placeholder2.png">
+<source src="video3.mp4" type="video/mp4">
+</video>
+</div>
+</div>
+
+<button class="carousel-btn next">
+<svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+</button>
+</div>
 </section>
 
 <main class="portfolio-section" id="work">
-    <div class="section-header reveal" style="text-align: center; margin-bottom: 40px;">
-        <h2>Selected Graphics</h2>
-    </div>
-    <div class="mosaic-grid">
-        <div class="mosaic-item span-2-col span-2-row reveal">
-            <a href="aab2.png" class="lightbox-link">
-                <img src="aab2.png" alt="Player Poster">
-                <div class="overlay"><h3>Player Poster</h3><p>Photoshop & Indesign</p></div>
-            </a>
-        </div>
-        <div class="mosaic-item span-2-row reveal">
-            <a href="marley.png" class="lightbox-link">
-                <img src="marley.png" alt="Marley Poster">
-                <div class="overlay"><h3>Marley Poster</h3><p>Photoshop</p></div>
-            </a>
-        </div>
-        <div class="mosaic-item span-2-row reveal">
-            <a href="f1.png" class="lightbox-link">
-                <img src="f1.png" alt="F1 Poster">
-                <div class="overlay"><h3>F1 Poster</h3><p>Photoshop</p></div>
-            </a>
-        </div>
-        <div class="mosaic-item span-2-col reveal">
-            <a href="lac.PNG" class="lightbox-link">
-                <img src="lac.PNG" alt="Lacoste Abribus">
-                <div class="overlay"><h3>Lacoste Abribus</h3><p>Photoshop</p></div>
-            </a>
-        </div>
-        <div class="mosaic-item span-2-col reveal">
-            <a href="aab1.png" class="lightbox-link">
-                <img src="aab1.png" alt="Matchday Poster">
-                <div class="overlay"><h3>Matchday Poster</h3><p>Photoshop</p></div>
-            </a>
-        </div>
-        <div class="mosaic-item span-2-row reveal">
-            <a href="final.png" class="lightbox-link">
-                <img src="final.png" alt="Movie Poster">
-                <div class="overlay"><h3>Movie Poster</h3><p>Illustrator</p></div>
-            </a>
-        </div>
-        <div class="mosaic-item reveal">
-            <a href="frontier.jpg" class="lightbox-link">
-                <img src="frontier.jpg" alt="Movie Poster">
-                <div class="overlay"><h3>Movie Poster</h3><p>Photoshop</p></div>
-            </a>
-        </div>
-        <div class="mosaic-item span-2-col reveal">
-            <a href="kaffe.png" class="lightbox-link">
-                <img src="kaffe.png" alt="Campaign Mockup">
-                <div class="overlay"><h3>Campaign Mockup</h3><p>Photoshop</p></div>
-            </a>
-        </div>
-        <div class="mosaic-item span-2-row reveal">
-            <a href="aab4.jpg" class="lightbox-link">
-                <img src="aab4.jpg" alt="Lineup Graphic">
-                <div class="overlay"><h3>Lineup Graphic</h3><p>Illustrator & PS</p></div>
-            </a>
-        </div>
-        <div class="mosaic-item reveal">
-            <a href="kropsind.PNG" class="lightbox-link">
-                <img src="kropsind.PNG" alt="Catalog Cover">
-                <div class="overlay"><h3>Catalog Cover</h3><p>Photoshop & Indesign</p></div>
-            </a>
-        </div>
-        <div class="mosaic-item span-2-col reveal">
-            <a href="doterra.PNG" class="lightbox-link">
-                <img src="doterra.PNG" alt="Product Showcase">
-                <div class="overlay"><h3>Product Showcase</h3><p>Photoshop</p></div>
-            </a>
-        </div>
-    </div>
+<div class="section-header reveal" style="text-align: center; margin-bottom: 40px;">
+<h2>Selected Graphics</h2>
+</div>
+<div class="mosaic-grid">
+<div class="mosaic-item span-2-col span-2-row reveal">
+<a href="aab2.png" class="lightbox-link">
+<img src="aab2.png" alt="Player Poster">
+<div class="overlay"><h3>Player Poster</h3><p>Photoshop & Indesign</p></div>
+</a>
+</div>
+<div class="mosaic-item span-2-row reveal">
+<a href="marley.png" class="lightbox-link">
+<img src="marley.png" alt="Marley Poster">
+<div class="overlay"><h3>Marley Poster</h3><p>Photoshop</p></div>
+</a>
+</div>
+<div class="mosaic-item span-2-row reveal">
+<a href="f1.png" class="lightbox-link">
+<img src="f1.png" alt="F1 Poster">
+<div class="overlay"><h3>F1 Poster</h3><p>Photoshop</p></div>
+</a>
+</div>
+<div class="mosaic-item span-2-col reveal">
+<a href="lac.PNG" class="lightbox-link">
+<img src="lac.PNG" alt="Lacoste Abribus">
+<div class="overlay"><h3>Lacoste Abribus</h3><p>Photoshop</p></div>
+</a>
+</div>
+<div class="mosaic-item span-2-col reveal">
+<a href="aab1.png" class="lightbox-link">
+<img src="aab1.png" alt="Matchday Poster">
+<div class="overlay"><h3>Matchday Poster</h3><p>Photoshop</p></div>
+</a>
+</div>
+<div class="mosaic-item span-2-row reveal">
+<a href="final.png" class="lightbox-link">
+<img src="final.png" alt="Movie Poster">
+<div class="overlay"><h3>Movie Poster</h3><p>Illustrator</p></div>
+</a>
+</div>
+<div class="mosaic-item reveal">
+<a href="frontier.jpg" class="lightbox-link">
+<img src="frontier.jpg" alt="Movie Poster">
+<div class="overlay"><h3>Movie Poster</h3><p>Photoshop</p></div>
+</a>
+</div>
+<div class="mosaic-item span-2-col reveal">
+<a href="kaffe.png" class="lightbox-link">
+<img src="kaffe.png" alt="Campaign Mockup">
+<div class="overlay"><h3>Campaign Mockup</h3><p>Photoshop</p></div>
+</a>
+</div>
+<div class="mosaic-item span-2-row reveal">
+<a href="aab4.jpg" class="lightbox-link">
+<img src="aab4.jpg" alt="Lineup Graphic">
+<div class="overlay"><h3>Lineup Graphic</h3><p>Illustrator & PS</p></div>
+</a>
+</div>
+<div class="mosaic-item reveal">
+<a href="kropsind.PNG" class="lightbox-link">
+<img src="kropsind.PNG" alt="Catalog Cover">
+<div class="overlay"><h3>Catalog Cover</h3><p>Photoshop & Indesign</p></div>
+</a>
+</div>
+<div class="mosaic-item span-2-col reveal">
+<a href="doterra.PNG" class="lightbox-link">
+<img src="doterra.PNG" alt="Product Showcase">
+<div class="overlay"><h3>Product Showcase</h3><p>Photoshop</p></div>
+</a>
+</div>
+</div>
 </main>
 
 <footer id="contact" class="reveal">
-    <h2>Let's build something together.</h2>
-    <br><br>
-    <a href="mailto:magnusskoedtlarsen@hotmail.com" class="contact-link">Get in Touch</a>
-    <span class="copyright">&copy; 2026 SKOEDTGRAPHICS</span>
+<h2>Let's build something together.</h2>
+<br><br>
+<a href="mailto:magnusskoedtlarsen@hotmail.com" class="contact-link">Get in Touch</a>
+<span class="copyright">&copy; 2026 SKOEDTGRAPHICS</span>
 </footer>
 
 <div class="lightbox-overlay" id="lightbox">
-    <img src="" alt="Full view">
+<img src="" alt="Full view">
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const words = document.querySelectorAll('.hero h1 .word');
-        let charIndex = 0;
+document.addEventListener('DOMContentLoaded', () => {
 
-        words.forEach((word) => {
-            const text = word.textContent;
-            word.textContent = '';
-            [...text].forEach((char) => {
-                const span = document.createElement('span');
-                span.textContent = char;
-                span.className = 'char';
-                span.style.transitionDelay = `${charIndex * 0.05}s`;
-                word.appendChild(span);
-                charIndex++;
-            });
-        });
-        
-        setTimeout(() => {
-            document.querySelectorAll('.char').forEach(c => c.classList.add('active'));
-            document.querySelector('.hero p').classList.add('active');
-        }, 100);
+  /* ── AMBIENT LIGHT ─────────────────────────────────────────
+     Two overlapping glows drift on independent Lissajous paths.
+     Frequencies are irrational relative to each other so the
+     pattern never exactly repeats — always feels organic.
+  ──────────────────────────────────────────────────────────── */
+  const bgLight = document.getElementById('bg-light');
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('active');
-            });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  // Glow definitions: size, color, speed multipliers, phase offsets
+  const glows = [
+    {
+      rx: 55, ry: 42,           // ellipse radii in vw/vh
+      color: '255,255,255',
+      alpha: 0.038,
+      alphaInner: 0.022,
+      freqX: 0.00011,           // radians per ms
+      freqY: 0.000073,
+      phaseX: 0,
+      phaseY: Math.PI / 3,
+      rangeX: 38,               // % of viewport to roam
+      rangeY: 34,
+      cx: 50, cy: 45            // centre anchor %
+    },
+    {
+      rx: 40, ry: 30,
+      color: '180,200,255',
+      alpha: 0.022,
+      alphaInner: 0.012,
+      freqX: 0.000083,
+      freqY: 0.000127,
+      phaseX: Math.PI,
+      phaseY: Math.PI * 0.7,
+      rangeX: 30,
+      rangeY: 28,
+      cx: 52, cy: 52
+    }
+  ];
 
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = lightbox.querySelector('img');
-        document.querySelectorAll('.lightbox-link').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                lightboxImg.src = link.href;
-                lightbox.classList.add('active');
-                document.body.style.overflow = 'hidden'; 
-            });
-        });
-        lightbox.addEventListener('click', () => {
-            lightbox.classList.remove('active');
-            document.body.style.overflow = 'auto'; 
-        });
+  let lastTime = null;
+  let elapsed = 0;
 
-        const track = document.querySelector('.carousel-track');
-        const slides = Array.from(track.children);
-        const nextButton = document.querySelector('.carousel-btn.next');
-        const prevButton = document.querySelector('.carousel-btn.prev');
-        let currentSlideIndex = 0;
+  function buildGradientString(glow, t) {
+    const x = glow.cx + glow.rangeX * Math.sin(glow.freqX * t + glow.phaseX);
+    const y = glow.cy + glow.rangeY * Math.sin(glow.freqY * t + glow.phaseY);
+    return (
+      `radial-gradient(ellipse ${glow.rx}vw ${glow.ry}vh at ${x.toFixed(2)}% ${y.toFixed(2)}%, ` +
+      `rgba(${glow.color},${glow.alphaInner}) 0%, ` +
+      `rgba(${glow.color},${glow.alpha}) 30%, ` +
+      `transparent 70%)`
+    );
+  }
 
-        const updateCarousel = () => {
-            const containerWidth = document.querySelector('.carousel-container').offsetWidth;
-            const slideWidth = slides[0].offsetWidth;
-            const gap = window.innerWidth <= 768 ? 10 : 20; 
-            
-            const offset = (containerWidth / 2) - (slideWidth / 2) - (currentSlideIndex * (slideWidth + gap));
-            track.style.transform = `translateX(${offset}px)`;
+  function animateLight(ts) {
+    if (!lastTime) lastTime = ts;
+    elapsed += ts - lastTime;
+    lastTime = ts;
 
-            slides.forEach((slide, index) => {
-                const video = slide.querySelector('video');
-                if (index === currentSlideIndex) {
-                    slide.classList.add('active');
-                } else {
-                    slide.classList.remove('active');
-                    if (video) video.pause();
-                }
-            });
-        };
+    // Compose multiple gradients separated by comma
+    bgLight.style.background = glows.map(g => buildGradientString(g, elapsed)).join(', ');
 
-        nextButton.addEventListener('click', (e) => {
-            e.stopPropagation();
-            currentSlideIndex = (currentSlideIndex + 1) % slides.length;
-            updateCarousel();
-        });
+    requestAnimationFrame(animateLight);
+  }
 
-        prevButton.addEventListener('click', (e) => {
-            e.stopPropagation();
-            currentSlideIndex = (currentSlideIndex - 1 + slides.length) % slides.length;
-            updateCarousel();
-        });
+  requestAnimationFrame(animateLight);
+  /* ── END AMBIENT LIGHT ─────────────────────────────────── */
 
-        updateCarousel();
-        window.addEventListener('resize', updateCarousel);
+
+  /* ── HERO TEXT ANIMATION ─────────────────────────────── */
+  const words = document.querySelectorAll('.hero h1 .word');
+  let charIndex = 0;
+
+  words.forEach((word) => {
+    const text = word.textContent;
+    word.textContent = '';
+    [...text].forEach((char) => {
+      const span = document.createElement('span');
+      span.textContent = char;
+      span.className = 'char';
+      span.style.transitionDelay = `${charIndex * 0.05}s`;
+      word.appendChild(span);
+      charIndex++;
     });
+  });
+
+  setTimeout(() => {
+    document.querySelectorAll('.char').forEach(c => c.classList.add('active'));
+    document.querySelector('.hero p').classList.add('active');
+  }, 100);
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('active');
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  /* ── LIGHTBOX ─────────────────────────────────────────── */
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = lightbox.querySelector('img');
+  document.querySelectorAll('.lightbox-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      lightboxImg.src = link.href;
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+  lightbox.addEventListener('click', () => {
+    lightbox.classList.remove('active');
+    document.body.style.overflow = 'auto';
+  });
+
+  /* ── CAROUSEL ─────────────────────────────────────────── */
+  const track = document.querySelector('.carousel-track');
+  const slides = Array.from(track.children);
+  const nextButton = document.querySelector('.carousel-btn.next');
+  const prevButton = document.querySelector('.carousel-btn.prev');
+  let currentSlideIndex = 0;
+
+  const updateCarousel = () => {
+    const containerWidth = document.querySelector('.carousel-container').offsetWidth;
+    const slideWidth = slides[0].offsetWidth;
+    const gap = window.innerWidth <= 768 ? 10 : 20;
+
+    const offset = (containerWidth / 2) - (slideWidth / 2) - (currentSlideIndex * (slideWidth + gap));
+    track.style.transform = `translateX(${offset}px)`;
+
+    slides.forEach((slide, index) => {
+      const video = slide.querySelector('video');
+      if (index === currentSlideIndex) {
+        slide.classList.add('active');
+      } else {
+        slide.classList.remove('active');
+        if (video) video.pause();
+      }
+    });
+  };
+
+  nextButton.addEventListener('click', (e) => {
+    e.stopPropagation();
+    currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+    updateCarousel();
+  });
+
+  prevButton.addEventListener('click', (e) => {
+    e.stopPropagation();
+    currentSlideIndex = (currentSlideIndex - 1 + slides.length) % slides.length;
+    updateCarousel();
+  });
+
+  updateCarousel();
+  window.addEventListener('resize', updateCarousel);
+});
 </script>
 </body>
 </html>
