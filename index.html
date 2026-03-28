@@ -110,9 +110,23 @@ nav a {
   transition: color 0.4s ease;
   text-transform: uppercase;
   letter-spacing: 2px;
+  position: relative;
+  padding-bottom: 4px;
+}
+
+nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: #ffffff;
+  transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 nav a:hover { color: #ffffff; }
+nav a:hover::after { width: 100%; }
 
 /* Hero Section */
 .hero {
