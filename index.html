@@ -6,17 +6,13 @@
 <title>SkoedtGraphics | Portfolio</title>
 
 <style>
-/* --- CSS RESET & BASE --- */
+/* CSS Reset & Base Styles */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: 'Helvetica Neue', Arial, sans-serif;
   cursor: default;
-}
-
-html {
-  scroll-behavior: smooth;
 }
 
 body {
@@ -27,11 +23,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: #050505; }
-::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
-
 /* ── AMBIENT LIGHT ─────────────────────────────────────────── */
 #bg-light {
   position: fixed;
@@ -41,15 +32,28 @@ body {
   z-index: 0;
   will-change: background;
 }
+/* ── END AMBIENT LIGHT ─────────────────────────────────────── */
 
+/* Everything else sits above the light */
 header, section, main, footer, .lightbox-overlay { position: relative; z-index: 1; }
 
 /* Interactive Elements */
-a, button, .hover-target, .char, .mosaic-item, .carousel-btn {
+a, button, .hover-target, .char, .mosaic-item {
   cursor: pointer;
 }
 
-/* --- LOGO & HEADER --- */
+/* Typography */
+h1, h2, h3 {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 800;
+}
+
+h2 {
+  font-size: 2.5rem;
+}
+
+/* Sticky Header */
 header {
   position: fixed;
   top: 0;
@@ -58,16 +62,10 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(5, 5, 5, 0);
-  backdrop-filter: blur(0px);
-  z-index: 1000;
-  transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-
-header.scrolled {
-  background: rgba(5, 5, 5, 0.85);
+  background: rgba(5, 5, 5, 0.7);
   backdrop-filter: blur(20px);
-  padding: 15px 50px;
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 1000;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -75,14 +73,15 @@ header.scrolled {
   display: flex;
   align-items: center;
   text-decoration: none;
-  gap: 12px;
+  gap: 15px;
   transition: all 0.4s ease;
 }
 
 .logo-img {
-  height: 35px;
+  height: 40px;
   width: auto;
-  transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  filter: drop-shadow(0 0 0px rgba(255,255,255,0));
 }
 
 .logo-text {
@@ -91,19 +90,16 @@ header.scrolled {
   font-weight: 700;
   letter-spacing: 4px;
   text-transform: uppercase;
-  transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: color 0.4s ease;
 }
 
-/* Logo Hover Effect */
 .logo:hover .logo-img {
   transform: scale(1.1) rotate(-3deg);
-  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+  filter: drop-shadow(0 0 8px rgba(255,255,255,0.3));
 }
 
 .logo:hover .logo-text {
-  letter-spacing: 7px;
-  color: #fff;
-  text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+  color: #aaa;
 }
 
 nav a {
@@ -118,7 +114,7 @@ nav a {
 
 nav a:hover { color: #ffffff; }
 
-/* --- HERO SECTION --- */
+/* Hero Section */
 .hero {
   height: 100vh;
   display: flex;
@@ -127,6 +123,7 @@ nav a:hover { color: #ffffff; }
   align-items: center;
   text-align: center;
   padding: 0 20px;
+  position: relative;
 }
 
 .hero h1 {
@@ -139,6 +136,11 @@ nav a:hover { color: #ffffff; }
   gap: 0 0.3em;
 }
 
+.hero h1 .word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
 .char {
   display: inline-block;
   opacity: 0;
@@ -149,7 +151,7 @@ nav a:hover { color: #ffffff; }
 .char.active {
   opacity: 1;
   transform: translateY(0);
-  background: linear-gradient(120deg, #fff, #777, #fff);
+  background: linear-gradient(120deg, #fff, #999, #fff);
   background-size: 200% 200%;
   animation: metallicShine 8s ease-in-out infinite;
   -webkit-background-clip: text;
@@ -167,6 +169,7 @@ nav a:hover { color: #ffffff; }
   letter-spacing: 3px;
   text-transform: uppercase;
   color: #666;
+  max-width: 600px;
   opacity: 0;
   transform: translateY(20px);
   transition: all 2s ease-in-out;
@@ -175,6 +178,121 @@ nav a:hover { color: #ffffff; }
 
 .hero p.active { opacity: 1; transform: translateY(0); }
 
+.scroll-indicator {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+}
+
+.scroll-indicator::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: #fff;
+  animation: scrollLine 2.5s cubic-bezier(0.645, 0.045, 0.355, 1) infinite;
+}
+
+@keyframes scrollLine {
+  0% { transform: translateY(-100%); }
+  50% { transform: translateY(0); }
+  100% { transform: translateY(100%); }
+}
+
+/* Carousel Section */
+.video-section {
+  padding: 100px 0;
+  overflow: hidden;
+  width: 100%;
+}
+
+.carousel-container {
+  position: relative;
+  width: 100%;
+  max-width: 100vw;
+}
+
+.carousel-track {
+  display: flex;
+  align-items: center;
+  transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: transform;
+}
+
+.carousel-slide {
+  min-width: 70%;
+  margin: 0 10px;
+  position: relative;
+  transition: all 0.8s ease;
+  opacity: 0.15;
+  transform: scale(0.85);
+  filter: blur(4px) grayscale(100%);
+  pointer-events: none;
+}
+
+.carousel-slide.active {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0) grayscale(0%);
+  pointer-events: all;
+}
+
+.carousel-slide video {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+  display: block;
+  background: #000;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #fff;
+  width: 48px;
+  height: 48px;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+  cursor: pointer !important;
+  opacity: 0.5;
+}
+
+.carousel-btn:hover {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.2);
+}
+
+.carousel-btn svg {
+  width: 32px;
+  height: 32px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 6px rgba(0,0,0,0.8));
+}
+
+.carousel-btn.prev { left: 40px; }
+.carousel-btn.next { right: 40px; }
+
+/* Portfolio Section */
+.portfolio-section {
+  padding: 120px 50px;
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
 /* --- SECTION HEADERS --- */
 .section-header {
   text-align: center;
@@ -182,6 +300,7 @@ nav a:hover { color: #ffffff; }
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 }
 
 .section-header h2 {
@@ -192,51 +311,21 @@ nav a:hover { color: #ffffff; }
   -webkit-text-fill-color: transparent;
   padding-bottom: 20px;
   position: relative;
+  margin-bottom: 0;
 }
 
+/* Subtle accent line below the header */
 .section-header h2::after {
   content: '';
   position: absolute;
-  bottom: 0; left: 50%;
+  bottom: 0;
+  left: 50%;
   transform: translateX(-50%);
-  width: 50px; height: 1px;
-  background: rgba(255, 255, 255, 0.1);
+  width: 50px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.15);
 }
 
-/* --- VIDEO CAROUSEL --- */
-.video-section { padding: 100px 0; overflow: hidden; }
-.carousel-container { position: relative; width: 100%; }
-.carousel-track {
-  display: flex;
-  align-items: center;
-  transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.carousel-slide {
-  min-width: 70%;
-  margin: 0 10px;
-  transition: all 0.8s ease;
-  opacity: 0.15;
-  transform: scale(0.85);
-  filter: grayscale(100%);
-}
-
-.carousel-slide.active { opacity: 1; transform: scale(1); filter: grayscale(0%); }
-.carousel-slide video { width: 100%; border-radius: 8px; background: #000; box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
-
-.carousel-btn {
-  position: absolute;
-  top: 50%; transform: translateY(-50%);
-  background: none; border: none; color: #fff;
-  z-index: 10; opacity: 0.4; transition: 0.3s;
-}
-.carousel-btn:hover { opacity: 1; transform: translateY(-50%) scale(1.2); }
-.carousel-btn svg { width: 35px; height: 35px; fill: none; stroke: currentColor; stroke-width: 2; }
-.carousel-btn.prev { left: 30px; }
-.carousel-btn.next { right: 30px; }
-
-/* --- PORTFOLIO GRID --- */
-.portfolio-section { padding: 120px 50px; max-width: 1800px; margin: 0 auto; }
 .mosaic-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -244,89 +333,210 @@ nav a:hover { color: #ffffff; }
   gap: 15px;
 }
 
-.mosaic-item { position: relative; overflow: hidden; border-radius: 8px; background: #111; }
-.mosaic-item img { width: 100%; height: 100%; object-fit: cover; transition: 1.2s cubic-bezier(0.165, 0.84, 0.44, 1); filter: brightness(0.7); }
+.mosaic-item {
+  position: relative;
+  overflow: hidden;
+  background-color: #111;
+  border-radius: 12px;
+}
+
+.mosaic-item a {
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.mosaic-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1), filter 1.2s ease;
+  filter: brightness(0.7) grayscale(20%);
+}
+
 .span-2-col { grid-column: span 2; }
 .span-2-row { grid-row: span 2; }
 
 .overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%);
-  display: flex; flex-direction: column; justify-content: flex-end;
-  padding: 30px; opacity: 0; transition: 0.6s;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 60%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 40px;
+  opacity: 0;
+  transition: opacity 0.6s ease;
 }
-.mosaic-item:hover img { transform: scale(1.05); filter: brightness(1); }
+
+.mosaic-item .overlay h3 {
+  font-size: 1.5rem;
+  color: #ffffff !important;
+  transform: translateY(15px);
+  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.mosaic-item .overlay p {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #cccccc !important;
+  margin-top: 5px;
+  transform: translateY(15px);
+  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition-delay: 0.05s;
+}
+
+.mosaic-item:hover img { transform: scale(1.05); filter: brightness(1) grayscale(0%); }
 .mosaic-item:hover .overlay { opacity: 1; }
+.mosaic-item:hover .overlay h3, .mosaic-item:hover .overlay p { transform: translateY(0); }
+
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.reveal.active { opacity: 1; transform: translateY(0); }
 
 /* --- ABOUT SECTION --- */
 .about-section {
-  padding: 100px 50px;
-  max-width: 1100px;
+  padding: 120px 50px;
+  max-width: 1200px;
   margin: 0 auto;
 }
+
 .about-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 60px;
+  gap: 80px;
+  align-items: start;
 }
+
+.about-title {
+  font-size: 1.2rem;
+  letter-spacing: 6px;
+  color: #ffffff;
+  margin-bottom: 30px;
+}
+
 .about-text {
   color: #888;
   font-size: 1.1rem;
   line-height: 1.8;
+  letter-spacing: 0.5px;
 }
-.about-text b { color: #fff; font-weight: 600; }
 
-/* --- FOOTER --- */
-footer { text-align: center; padding: 120px 50px; border-top: 1px solid rgba(255, 255, 255, 0.05); }
+.about-text b {
+  color: #fff;
+  font-weight: 600;
+}
+
+/* --- FIXED FOOTER & BUTTON --- */
+footer {
+  text-align: center;
+  padding: 120px 50px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
 .contact-link {
   display: inline-block;
-  color: #fff; text-decoration: none;
-  font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase;
-  padding: 18px 45px; border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 50px; transition: 0.4s; margin-bottom: 50px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.8rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 18px 40px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50px;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  margin-bottom: 50px;
 }
-.contact-link:hover { background: #fff; color: #000; transform: translateY(-5px); }
-.copyright { display: block; font-size: 0.65rem; color: #444; letter-spacing: 2px; }
 
-/* --- REVEAL --- */
-.reveal { opacity: 0; transform: translateY(30px); transition: 1s cubic-bezier(0.165, 0.84, 0.44, 1); }
-.reveal.active { opacity: 1; transform: translateY(0); }
+.contact-link:hover {
+  background-color: #ffffff;
+  color: #000000;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+  border-color: #ffffff;
+}
 
-/* --- LIGHTBOX --- */
+.copyright {
+  display: block;
+  font-size: 0.65rem;
+  color: #444;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* Lightbox Styles */
 .lightbox-overlay {
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0,0,0,0.95); backdrop-filter: blur(10px);
-  display: flex; justify-content: center; align-items: center;
-  opacity: 0; pointer-events: none; transition: 0.4s; z-index: 2000;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.95);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  z-index: 2000;
 }
-.lightbox-overlay img { max-width: 90%; max-height: 85vh; border-radius: 5px; }
-.lightbox-overlay.active { opacity: 1; pointer-events: all; }
 
-/* --- MOBILE OPTIMIZATION --- */
+.lightbox-overlay img {
+  max-width: 85%;
+  max-height: 85vh;
+  border-radius: 8px;
+  object-fit: contain;
+  transform: scale(0.95);
+  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.lightbox-overlay.active { opacity: 1; pointer-events: all; }
+.lightbox-overlay.active img { transform: scale(1); }
+
+/* --- MOBILE IMPROVEMENTS --- */
 @media (max-width: 768px) {
-  header { padding: 15px 25px; }
-  header.scrolled { padding: 12px 25px; }
-  nav { display: none; } /* Mobile usually uses a burger, but we'll keep it minimal */
+  header { padding: 15px 20px; }
+  .logo-text { font-size: 0.7rem; letter-spacing: 2px; }
+  nav a { margin-left: 15px; font-size: 0.65rem; }
+
+  h2 { font-size: 1.6rem !important; }
+
+  .hero h1 { font-size: 14vw; flex-direction: column; align-items: center; }
+  .hero h1 .word { display: block; width: 100%; }
+
+  .hero p { font-size: 0.75rem; padding: 0 10px; }
   
-  .hero h1 { font-size: 14vw; }
-  .section-header h2 { font-size: 2rem !important; letter-spacing: 4px; }
-  
-  .carousel-slide { min-width: 85%; }
-  .carousel-btn { display: none; } /* Use touch scroll */
-  
-  .portfolio-section { padding: 60px 20px; }
+  .section-header { margin-bottom: 40px; }
+  .section-header h2 { font-size: 2rem !important; letter-spacing: 4px; padding-bottom: 15px; }
+
+  .video-section { padding: 40px 0; }
+  .carousel-slide { min-width: 85%; margin: 0 5px; }
+  .carousel-btn.prev { left: 10px; }
+  .carousel-btn.next { right: 10px; }
+
+  .portfolio-section { padding: 30px 15px; }
   .mosaic-grid {
-    grid-template-columns: 1fr 1fr;
-    grid-auto-rows: 180px;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 200px;
     gap: 10px;
   }
+  .overlay { padding: 15px; }
+  .overlay h3 { font-size: 1rem; }
+  .overlay p { font-size: 0.6rem; }
+
   .span-2-col, .span-2-row { grid-column: span 1; grid-row: span 1; }
-  
+
   .about-section { padding: 60px 25px; }
-  .about-content { grid-template-columns: 1fr; gap: 30px; }
-  
+  .about-content { grid-template-columns: 1fr; gap: 40px; }
+
   footer { padding: 80px 20px; }
+  footer h2 { font-size: 1.2rem !important; }
   .contact-link { padding: 14px 30px; font-size: 0.7rem; }
 }
 </style>
@@ -335,9 +545,9 @@ footer { text-align: center; padding: 120px 50px; border-top: 1px solid rgba(255
 
 <div id="bg-light"></div>
 
-<header id="main-header">
+<header>
   <a href="#" class="logo">
-    <img src="SG logo transparent.png" alt="SG" class="logo-img">
+    <img src="SG logo transparent.png" alt="SG Logo" class="logo-img">
     <span class="logo-text">SkoedtGraphics</span>
   </a>
   <nav>
@@ -346,58 +556,145 @@ footer { text-align: center; padding: 120px 50px; border-top: 1px solid rgba(255
   </nav>
 </header>
 
-<section class="hero">
+<section class="hero" id="about">
   <h1>
     <span class="word">Visual</span>
     <span class="word">Innovation</span>
   </h1>
   <p class="reveal">Concept, design & execution by Magnus Skødt Larsen</p>
+  <div class="scroll-indicator"></div>
 </section>
 
 <section class="video-section reveal">
-  <div class="section-header">
+  <div class="section-header reveal">
     <h2>Video Editing</h2>
   </div>
+
   <div class="carousel-container">
-    <button class="carousel-btn prev"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <button class="carousel-btn prev">
+      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+
     <div class="carousel-track">
-      <div class="carousel-slide"><video controls poster="roverimg.PNG"><source src="rover.mp4" type="video/mp4"></video></div>
-      <div class="carousel-slide"><video controls poster="lacthumb.PNG"><source src="" type="video/mp4"></video></div>
-      <div class="carousel-slide"><video controls poster="placeholder2.png"><source src="video3.mp4" type="video/mp4"></video></div>
+      <div class="carousel-slide">
+        <video controls poster="roverimg.PNG">
+          <source src="rover.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="carousel-slide">
+        <video controls poster="lacthumb.PNG">
+          <source src="" type="video/mp4">
+        </video>
+      </div>
+      <div class="carousel-slide">
+        <video controls poster="placeholder2.png">
+          <source src="video3.mp4" type="video/mp4">
+        </video>
+      </div>
     </div>
-    <button class="carousel-btn next"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+
+    <button class="carousel-btn next">
+      <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
   </div>
 </section>
 
 <main class="portfolio-section" id="work">
   <div class="section-header reveal">
-    <h2>Graphics</h2>
+    <h2>Selected Graphics</h2>
   </div>
+  
   <div class="mosaic-grid">
-    <div class="mosaic-item span-2-col span-2-row reveal"><a href="aab2.png" class="lightbox-link"><img src="aab2.png" alt="Poster"><div class="overlay"><h3>Player Poster</h3><p>Photoshop</p></div></a></div>
-    <div class="mosaic-item span-2-row reveal"><a href="marley.png" class="lightbox-link"><img src="marley.png" alt="Poster"><div class="overlay"><h3>Marley Poster</h3><p>Photoshop</p></div></a></div>
-    <div class="mosaic-item span-2-row reveal"><a href="f1.png" class="lightbox-link"><img src="f1.png" alt="Poster"><div class="overlay"><h3>F1 Poster</h3><p>Photoshop</p></div></a></div>
-    <div class="mosaic-item span-2-col reveal"><a href="lac.PNG" class="lightbox-link"><img src="lac.PNG" alt="Poster"><div class="overlay"><h3>Lacoste</h3><p>Photoshop</p></div></a></div>
-    <div class="mosaic-item span-2-col reveal"><a href="aab1.png" class="lightbox-link"><img src="aab1.png" alt="Poster"><div class="overlay"><h3>Matchday</h3><p>Photoshop</p></div></a></div>
-    <div class="mosaic-item span-2-row reveal"><a href="final.png" class="lightbox-link"><img src="final.png" alt="Poster"><div class="overlay"><h3>Movie Poster</h3><p>Illustrator</p></div></a></div>
-    <div class="mosaic-item reveal"><a href="frontier.jpg" class="lightbox-link"><img src="frontier.jpg" alt="Poster"><div class="overlay"><h3>Frontier</h3><p>Photoshop</p></div></a></div>
-    <div class="mosaic-item span-2-col reveal"><a href="kaffe.png" class="lightbox-link"><img src="kaffe.png" alt="Mockup"><div class="overlay"><h3>Campaign</h3><p>Photoshop</p></div></a></div>
-    <div class="mosaic-item span-2-row reveal"><a href="aab4.jpg" class="lightbox-link"><img src="aab4.jpg" alt="Graphic"><div class="overlay"><h3>Lineup</h3><p>AI / PS</p></div></a></div>
-    <div class="mosaic-item reveal"><a href="kropsind.PNG" class="lightbox-link"><img src="kropsind.PNG" alt="Catalog"><div class="overlay"><h3>Catalog</h3><p>InDesign</p></div></a></div>
-    <div class="mosaic-item span-2-col reveal"><a href="doterra.PNG" class="lightbox-link"><img src="doterra.PNG" alt="Product"><div class="overlay"><h3>Doterra</h3><p>Photoshop</p></div></a></div>
+    <div class="mosaic-item span-2-col span-2-row reveal">
+      <a href="aab2.png" class="lightbox-link">
+        <img src="aab2.png" alt="Player Poster">
+        <div class="overlay"><h3>Player Poster</h3><p>Photoshop & Indesign</p></div>
+      </a>
+    </div>
+    <div class="mosaic-item span-2-row reveal">
+      <a href="marley.png" class="lightbox-link">
+        <img src="marley.png" alt="Marley Poster">
+        <div class="overlay"><h3>Marley Poster</h3><p>Photoshop</p></div>
+      </a>
+    </div>
+    <div class="mosaic-item span-2-row reveal">
+      <a href="f1.png" class="lightbox-link">
+        <img src="f1.png" alt="F1 Poster">
+        <div class="overlay"><h3>F1 Poster</h3><p>Photoshop</p></div>
+      </a>
+    </div>
+    <div class="mosaic-item span-2-col reveal">
+      <a href="lac.PNG" class="lightbox-link">
+        <img src="lac.PNG" alt="Lacoste Abribus">
+        <div class="overlay"><h3>Lacoste Abribus</h3><p>Photoshop</p></div>
+      </a>
+    </div>
+    <div class="mosaic-item span-2-col reveal">
+      <a href="aab1.png" class="lightbox-link">
+        <img src="aab1.png" alt="Matchday Poster">
+        <div class="overlay"><h3>Matchday Poster</h3><p>Photoshop</p></div>
+      </a>
+    </div>
+    <div class="mosaic-item span-2-row reveal">
+      <a href="final.png" class="lightbox-link">
+        <img src="final.png" alt="Movie Poster">
+        <div class="overlay"><h3>Movie Poster</h3><p>Illustrator</p></div>
+      </a>
+    </div>
+    <div class="mosaic-item reveal">
+      <a href="frontier.jpg" class="lightbox-link">
+        <img src="frontier.jpg" alt="Movie Poster">
+        <div class="overlay"><h3>Movie Poster</h3><p>Photoshop</p></div>
+      </a>
+    </div>
+    <div class="mosaic-item span-2-col reveal">
+      <a href="kaffe.png" class="lightbox-link">
+        <img src="kaffe.png" alt="Campaign Mockup">
+        <div class="overlay"><h3>Campaign Mockup</h3><p>Photoshop</p></div>
+      </a>
+    </div>
+    <div class="mosaic-item span-2-row reveal">
+      <a href="aab4.jpg" class="lightbox-link">
+        <img src="aab4.jpg" alt="Lineup Graphic">
+        <div class="overlay"><h3>Lineup Graphic</h3><p>Illustrator & PS</p></div>
+      </a>
+    </div>
+    <div class="mosaic-item reveal">
+      <a href="kropsind.PNG" class="lightbox-link">
+        <img src="kropsind.PNG" alt="Catalog Cover">
+        <div class="overlay"><h3>Catalog Cover</h3><p>Photoshop & Indesign</p></div>
+      </a>
+    </div>
+    <div class="mosaic-item span-2-col reveal">
+      <a href="doterra.PNG" class="lightbox-link">
+        <img src="doterra.PNG" alt="Product Showcase">
+        <div class="overlay"><h3>Product Showcase</h3><p>Photoshop</p></div>
+      </a>
+    </div>
   </div>
 </main>
 
 <section class="about-section reveal">
-  <div class="section-header">
-    <h2>About Me</h2>
+  <div class="section-header reveal">
+    <h2>The Vision</h2>
   </div>
   <div class="about-content">
     <div class="about-column">
-      <p class="about-text">Based in Denmark, I specialize in crafting <b>high-impact visual narratives</b>. My work sits at the intersection of technical precision and artistic exploration.</p>
+      <h3 class="about-title">About me</h3>
+      <p class="about-text">
+        Based in Denmark, I specialize in crafting <b>high-impact visual narratives</b>. 
+        My work sits at the intersection of technical precision and artistic exploration, 
+        focusing on graphic design and professional video post-production.
+      </p>
     </div>
     <div class="about-column">
-      <p class="about-text">Whether it’s a minimalist poster or a complex edit, I believe in a philosophy of <b>"Less, but better"</b>—stripping away the noise to let the message shine.</p>
+      <h3 class="about-title">The Philosophy</h3>
+      <p class="about-text">
+        Every project is an opportunity to push the boundaries of <b>visual innovation</b>. 
+        Whether it’s a minimalist poster or a complex edit, I believe in a philosophy 
+        of "Less, but better"—stripping away the noise to let the core message shine 
+        with clarity and power.
+      </p>
     </div>
   </div>
 </section>
@@ -416,81 +713,118 @@ footer { text-align: center; padding: 120px 50px; border-top: 1px solid rgba(255
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* --- LIGHT ENGINE --- */
+  /* ── AMBIENT LIGHT ───────────────────────────────────────── */
   const bgLight = document.getElementById('bg-light');
-  let lastTime = null, elapsed = 0;
+  let lastTime = null;
+  let elapsed = 0;
+  const FREQ_X = 0.000038;   
+  const FREQ_Y = 0.000027;   
+  const PHASE_Y = Math.PI * 0.6;
+
   function animateLight(ts) {
     if (!lastTime) lastTime = ts;
     elapsed += ts - lastTime;
     lastTime = ts;
-    const srcX = -15 + 10 * Math.sin(0.00003 * elapsed);
-    const srcY = -20 + 8 * Math.sin(0.00002 * elapsed);
-    bgLight.style.background = `radial-gradient(ellipse 140vw 110vh at ${srcX}% ${srcY}%, rgba(255,255,240,0.1) 0%, transparent 80%)`;
+    const srcX = -18 + 14 * Math.sin(FREQ_X * elapsed);          
+    const srcY = -22 + 12 * Math.sin(FREQ_Y * elapsed + PHASE_Y); 
+    bgLight.style.background = [
+      `radial-gradient(ellipse 140vw 110vh at ${srcX.toFixed(1)}% ${srcY.toFixed(1)}%, ` +
+        `rgba(255,252,245,0.11) 0%, ` +
+        `rgba(255,252,245,0.05) 25%, ` +
+        `rgba(255,250,240,0.015) 55%, ` +
+        `transparent 75%)`,
+      `radial-gradient(ellipse 90vw 60vh at ${(srcX + 8).toFixed(1)}% ${(srcY - 5).toFixed(1)}%, ` +
+        `rgba(210,225,255,0.045) 0%, ` +
+        `rgba(210,225,255,0.015) 40%, ` +
+        `transparent 65%)`
+    ].join(', ');
     requestAnimationFrame(animateLight);
   }
   requestAnimationFrame(animateLight);
 
-  /* --- HEADER SCROLL --- */
-  const header = document.getElementById('main-header');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) header.classList.add('scrolled');
-    else header.classList.remove('scrolled');
-  });
-
-  /* --- HERO ANIMATION --- */
+  /* ── HERO TEXT ANIMATION ─────────────────────────────── */
   const words = document.querySelectorAll('.hero h1 .word');
-  let charIdx = 0;
-  words.forEach(w => {
-    const txt = w.textContent; w.textContent = '';
-    [...txt].forEach(c => {
-      const s = document.createElement('span'); s.textContent = c; s.className = 'char';
-      s.style.transitionDelay = `${charIdx * 0.05}s`; w.appendChild(s); charIdx++;
+  let charIndex = 0;
+
+  words.forEach((word) => {
+    const text = word.textContent;
+    word.textContent = '';
+    [...text].forEach((char) => {
+      const span = document.createElement('span');
+      span.textContent = char;
+      span.className = 'char';
+      span.style.transitionDelay = `${charIndex * 0.05}s`;
+      word.appendChild(span);
+      charIndex++;
     });
   });
+
   setTimeout(() => {
     document.querySelectorAll('.char').forEach(c => c.classList.add('active'));
     document.querySelector('.hero p').classList.add('active');
   }, 100);
 
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('active');
+    });
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  /* --- CAROUSEL --- */
+  /* ── LIGHTBOX ─────────────────────────────────────────── */
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = lightbox.querySelector('img');
+  document.querySelectorAll('.lightbox-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      lightboxImg.src = link.href;
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+  lightbox.addEventListener('click', () => {
+    lightbox.classList.remove('active');
+    document.body.style.overflow = 'auto';
+  });
+
+  /* ── CAROUSEL ─────────────────────────────────────────── */
   const track = document.querySelector('.carousel-track');
   const slides = Array.from(track.children);
-  const nextBtn = document.querySelector('.carousel-btn.next');
-  const prevBtn = document.querySelector('.carousel-btn.prev');
-  let currentIndex = 0;
+  const nextButton = document.querySelector('.carousel-btn.next');
+  const prevButton = document.querySelector('.carousel-btn.prev');
+  let currentSlideIndex = 0;
 
   const updateCarousel = () => {
     const containerWidth = document.querySelector('.carousel-container').offsetWidth;
     const slideWidth = slides[0].offsetWidth;
     const gap = window.innerWidth <= 768 ? 10 : 20;
-    const offset = (containerWidth / 2) - (slideWidth / 2) - (currentIndex * (slideWidth + gap));
+    const offset = (containerWidth / 2) - (slideWidth / 2) - (currentSlideIndex * (slideWidth + gap));
     track.style.transform = `translateX(${offset}px)`;
-    slides.forEach((s, i) => {
-      s.classList.toggle('active', i === currentIndex);
-      const v = s.querySelector('video'); if (i !== currentIndex && v) v.pause();
+    slides.forEach((slide, index) => {
+      const video = slide.querySelector('video');
+      if (index === currentSlideIndex) {
+        slide.classList.add('active');
+      } else {
+        slide.classList.remove('active');
+        if (video) video.pause();
+      }
     });
   };
 
-  nextBtn.addEventListener('click', () => { currentIndex = (currentIndex + 1) % slides.length; updateCarousel(); });
-  prevBtn.addEventListener('click', () => { currentIndex = (currentIndex - 1 + slides.length) % slides.length; updateCarousel(); });
-  window.addEventListener('resize', updateCarousel);
-  updateCarousel();
-
-  /* --- LIGHTBOX --- */
-  const lightbox = document.getElementById('lightbox');
-  const lbImg = lightbox.querySelector('img');
-  document.querySelectorAll('.lightbox-link').forEach(link => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault(); lbImg.src = link.href;
-      lightbox.classList.add('active'); document.body.style.overflow = 'hidden';
-    });
+  nextButton.addEventListener('click', (e) => {
+    e.stopPropagation();
+    currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+    updateCarousel();
   });
-  lightbox.addEventListener('click', () => { lightbox.classList.remove('active'); document.body.style.overflow = 'auto'; });
+
+  prevButton.addEventListener('click', (e) => {
+    e.stopPropagation();
+    currentSlideIndex = (currentSlideIndex - 1 + slides.length) % slides.length;
+    updateCarousel();
+  });
+
+  updateCarousel();
+  window.addEventListener('resize', updateCarousel);
 });
 </script>
 </body>
