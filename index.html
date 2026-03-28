@@ -55,7 +55,6 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* --- LOGO HOVER EFFECT --- */
         .logo {
             display: flex;
             align-items: center;
@@ -354,6 +353,7 @@
 
         .reveal.active { opacity: 1; transform: translateY(0); }
 
+        /* --- FIXED FOOTER & BUTTON --- */
         footer {
             text-align: center;
             padding: 120px 50px;
@@ -361,16 +361,37 @@
         }
 
         .contact-link {
+            display: inline-block;
             color: #fff;
             text-decoration: none;
-            font-size: 0.9rem;
-            letter-spacing: 2px;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            position: relative;
-            padding-bottom: 5px;
-            font-weight: bold;
+            font-weight: 700;
+            padding: 18px 40px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px; /* Pill shape */
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            margin-bottom: 50px; /* Space above copyright */
         }
 
+        .contact-link:hover {
+            background-color: #ffffff;
+            color: #000000;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+            border-color: #ffffff;
+        }
+
+        .copyright {
+            display: block;
+            font-size: 0.65rem;
+            color: #444;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Lightbox Styles */
         .lightbox-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -404,7 +425,6 @@
             .logo-text { font-size: 0.7rem; letter-spacing: 2px; }
             nav a { margin-left: 15px; font-size: 0.65rem; }
 
-            /* SMALLER TITLES ON MOBILE */
             h2 { font-size: 1.6rem !important; }
 
             .hero h1 { font-size: 14vw; flex-direction: column; align-items: center; }
@@ -432,6 +452,7 @@
             
             footer { padding: 80px 20px; }
             footer h2 { font-size: 1.2rem !important; }
+            .contact-link { padding: 14px 30px; font-size: 0.7rem; }
         }
     </style>
 </head>
@@ -557,7 +578,7 @@
     <h2>Let's build something together.</h2>
     <br><br>
     <a href="mailto:magnusskoedtlarsen@hotmail.com" class="contact-link">Get in Touch</a>
-    <p class="copyright">&copy; 2026 SKOEDTGRAPHICS</p>
+    <span class="copyright">&copy; 2026 SKOEDTGRAPHICS</span>
 </footer>
 
 <div class="lightbox-overlay" id="lightbox">
