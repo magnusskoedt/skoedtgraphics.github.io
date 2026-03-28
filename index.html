@@ -74,11 +74,6 @@
             font-weight: 700;
             letter-spacing: 4px;
             text-transform: uppercase;
-            transition: opacity 0.3s ease;
-        }
-
-        .logo:hover .logo-img {
-            transform: scale(1.05);
         }
 
         nav a {
@@ -91,9 +86,7 @@
             letter-spacing: 2px;
         }
 
-        nav a:hover {
-            color: #ffffff;
-        }
+        nav a:hover { color: #ffffff; }
 
         /* Hero Section */
         .hero {
@@ -151,12 +144,8 @@
             transition-delay: 0.5s;
         }
         
-        .hero p.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .hero p.active { opacity: 1; transform: translateY(0); }
 
-        /* Scroll Line */
         .scroll-indicator {
             position: absolute;
             bottom: 50px;
@@ -171,10 +160,8 @@
         .scroll-indicator::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: #fff;
             animation: scrollLine 2.5s cubic-bezier(0.645, 0.045, 0.355, 1) infinite;
         }
@@ -185,10 +172,10 @@
             100% { transform: translateY(100%); }
         }
 
-        /* --- UPDATED CAROUSEL CSS --- */
+        /* Carousel Section */
         .video-section {
             padding: 100px 0;
-            overflow: hidden; /* Clips the track */
+            overflow: hidden;
             width: 100%;
         }
 
@@ -206,14 +193,14 @@
         }
 
         .carousel-slide {
-            min-width: 70%; /* Shows the neighbors on the sides */
+            min-width: 70%;
             margin: 0 10px;
             position: relative;
             transition: all 0.8s ease;
-            opacity: 0.15; /* Heavily faded */
-            transform: scale(0.85); /* Smaller */
+            opacity: 0.15;
+            transform: scale(0.85);
             filter: blur(4px) grayscale(100%);
-            pointer-events: none; /* Only active slide is clickable */
+            pointer-events: none;
         }
 
         .carousel-slide.active {
@@ -226,7 +213,7 @@
         .carousel-slide video {
             width: 100%;
             height: auto;
-            border-radius: 12px;
+            border-radius: 12px; /* MATCHING RADIUS */
             box-shadow: 0 30px 60px rgba(0,0,0,0.6);
             display: block;
             background: #000;
@@ -250,23 +237,10 @@
             transition: all 0.3s ease;
         }
 
-        .carousel-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-50%) scale(1.1);
-        }
-
-        .carousel-btn svg {
-            width: 24px;
-            height: 24px;
-            fill: none;
-            stroke: currentColor;
-            stroke-width: 2;
-        }
-
         .carousel-btn.prev { left: 40px; }
         .carousel-btn.next { right: 40px; }
 
-        /* --- REST OF STYLES --- */
+        /* Portfolio Section */
         .portfolio-section {
             padding: 120px 50px;
             max-width: 1800px;
@@ -284,6 +258,7 @@
             position: relative;
             overflow: hidden;
             background-color: #111;
+            border-radius: 12px; /* MATCHING RADIUS ADDED HERE */
         }
 
         .mosaic-item img {
@@ -312,27 +287,6 @@
         .mosaic-item:hover img { transform: scale(1.05); filter: brightness(1) grayscale(0%); }
         .mosaic-item:hover .overlay { opacity: 1; }
 
-        .mosaic-item .overlay h3 {
-            font-size: 1.5rem;
-            color: #ffffff;
-            transform: translateY(15px);
-            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
-
-        .mosaic-item .overlay p {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #aaa;
-            margin-top: 5px;
-            transform: translateY(15px);
-            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-            transition-delay: 0.05s;
-        }
-
-        .mosaic-item:hover .overlay h3,
-        .mosaic-item:hover .overlay p { transform: translateY(0); }
-
         .reveal {
             opacity: 0;
             transform: translateY(40px);
@@ -358,25 +312,6 @@
             font-weight: bold;
         }
 
-        .contact-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 0;
-            width: 0%; height: 2px;
-            background: #fff;
-            transition: width 0.4s ease;
-        }
-
-        .contact-link:hover::after { width: 100%; }
-
-        .copyright {
-            margin-top: 60px;
-            font-size: 0.7rem;
-            color: #555;
-            letter-spacing: 2px;
-            font-weight: bold;
-        }
-
         .lightbox-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -395,6 +330,7 @@
         .lightbox-overlay img {
             max-width: 85%;
             max-height: 85vh;
+            border-radius: 8px;
             object-fit: contain;
             transform: scale(0.95);
             transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -403,14 +339,44 @@
         .lightbox-overlay.active { opacity: 1; pointer-events: all; }
         .lightbox-overlay.active img { transform: scale(1); }
 
+        /* --- MOBILE IMPROVEMENTS (Tablet & Phone) --- */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 12vw; }
-            .carousel-slide { min-width: 85%; }
-            .carousel-btn { width: 45px; height: 45px; }
+            header { padding: 15px 20px; }
+            .logo-text { font-size: 0.7rem; letter-spacing: 2px; }
+            nav a { margin-left: 15px; font-size: 0.65rem; }
+
+            .hero h1 { font-size: 14vw; margin-bottom: 10px; }
+            .hero p { font-size: 0.75rem; padding: 0 10px; }
+
+            /* Carousel Mobile Refinements */
+            .video-section { padding: 60px 0; }
+            .carousel-slide { 
+                min-width: 85%; /* Larger active video on small screens */
+                margin: 0 5px;
+            }
+            .carousel-btn { 
+                width: 45px; height: 45px; 
+                background: rgba(5, 5, 5, 0.6); /* Higher contrast on mobile */
+            }
             .carousel-btn.prev { left: 10px; }
             .carousel-btn.next { right: 10px; }
-            .mosaic-grid { grid-template-columns: repeat(2, 1fr); }
-            header { padding: 20px; }
+
+            /* Portfolio Mobile Refinements */
+            .portfolio-section { padding: 60px 15px; }
+            .mosaic-grid { 
+                grid-template-columns: repeat(2, 1fr); 
+                grid-auto-rows: 200px; /* Shorter rows for better scrolling */
+                gap: 10px; 
+            }
+            .overlay { padding: 15px; }
+            .overlay h3 { font-size: 1rem; }
+            .overlay p { font-size: 0.6rem; }
+            
+            /* Remove complex spans on very small screens to prevent weird gaps */
+            .span-2-col, .span-2-row { grid-column: span 1; grid-row: span 1; }
+            
+            footer { padding: 80px 20px; }
+            footer h2 { font-size: 1.4rem; }
         }
     </style>
 </head>
@@ -434,8 +400,8 @@
 </section>
 
 <section class="video-section reveal">
-    <div class="section-header" style="text-align: center; margin-bottom: 40px;">
-        <h2>Video Production</h2>
+    <div class="section-header" style="text-align: center; margin-bottom: 30px;">
+        <h2>Motion</h2>
     </div>
     
     <div class="carousel-container">
@@ -449,13 +415,11 @@
                     <source src="rover.mp4" type="video/mp4">
                 </video>
             </div>
-            
             <div class="carousel-slide">
-                <video controls poster="lacthumb.PNG">
-                    <source src="lacvid.mp4" type="video/mp4">
+                <video controls poster="placeholder1.png">
+                    <source src="video2.mp4" type="video/mp4">
                 </video>
             </div>
-
             <div class="carousel-slide">
                 <video controls poster="placeholder2.png">
                     <source src="video3.mp4" type="video/mp4">
@@ -470,7 +434,7 @@
 </section>
 
 <main class="portfolio-section" id="work">
-    <div class="section-header reveal" style="text-align: center; margin-bottom: 60px;">
+    <div class="section-header reveal" style="text-align: center; margin-bottom: 40px;">
         <h2>Selected Works</h2>
     </div>
     <div class="mosaic-grid">
@@ -544,7 +508,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // 1. Hero text animation
+        // Hero text animation
         const title = document.querySelector('.hero h1');
         const text = title.textContent;
         title.textContent = ''; 
@@ -561,7 +525,7 @@
             document.querySelector('.hero p').classList.add('active');
         }, 100);
 
-        // 2. Scroll reveal observer
+        // Intersection Observer
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -571,7 +535,7 @@
         }, { threshold: 0.1 });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // 3. Lightbox functionality
+        // Lightbox
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = lightbox.querySelector('img');
         document.querySelectorAll('.lightbox-link').forEach(link => {
@@ -587,7 +551,7 @@
             document.body.style.overflow = 'auto'; 
         });
 
-        // 4. --- UPDATED CAROUSEL LOGIC ---
+        // Carousel Logic
         const track = document.querySelector('.carousel-track');
         const slides = Array.from(track.children);
         const nextButton = document.querySelector('.carousel-btn.next');
@@ -597,21 +561,18 @@
         const updateCarousel = () => {
             const containerWidth = document.querySelector('.carousel-container').offsetWidth;
             const slideWidth = slides[0].offsetWidth;
+            const gap = window.innerWidth <= 768 ? 10 : 20; 
             
-            // Calculate movement to center the current slide
-            // Centering logic: (Container/2) - (Slide/2) - (currentSlideIndex * slideWidth)
-            const offset = (containerWidth / 2) - (slideWidth / 2) - (currentSlideIndex * (slideWidth + 20));
-            
+            const offset = (containerWidth / 2) - (slideWidth / 2) - (currentSlideIndex * (slideWidth + gap));
             track.style.transform = `translateX(${offset}px)`;
 
-            // Update visuals for active/inactive slides
             slides.forEach((slide, index) => {
                 const video = slide.querySelector('video');
                 if (index === currentSlideIndex) {
                     slide.classList.add('active');
                 } else {
                     slide.classList.remove('active');
-                    if (video) video.pause(); // Stop background videos
+                    if (video) video.pause();
                 }
             });
         };
@@ -626,7 +587,6 @@
             updateCarousel();
         });
 
-        // Initialize and handle window resize
         updateCarousel();
         window.addEventListener('resize', updateCarousel);
     });
