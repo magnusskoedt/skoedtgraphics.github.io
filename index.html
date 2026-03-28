@@ -526,7 +526,13 @@ footer {
 
 /* --- MOBILE IMPROVEMENTS --- */
 @media (max-width: 768px) {
-  header { padding: 15px 20px; }
+  /* Added .scrolled specificity fix to prevent padding from squashing items */
+  header, header.scrolled { padding: 15px 20px; flex-wrap: nowrap; }
+  header.scrolled { padding: 12px 20px; }
+  
+  /* Ensure menu items never stack */
+  nav { display: flex; align-items: center; white-space: nowrap; }
+  
   .logo-text { font-size: 0.7rem; letter-spacing: 2px; }
   nav a { margin-left: 15px; font-size: 0.65rem; }
 
