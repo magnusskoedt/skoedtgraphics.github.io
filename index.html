@@ -164,23 +164,32 @@ nav a:hover::after { width: 100%; }
   display: inline-block;
   opacity: 0;
   transform: translateY(30px);
-  transition: all 1s cubic-bezier(0.2, 0.6, 0.2, 1);
+  /* Limit transition to specific properties so it doesn't interfere with the background animation */
+  transition: opacity 1s cubic-bezier(0.2, 0.6, 0.2, 1), transform 1s cubic-bezier(0.2, 0.6, 0.2, 1);
 }
 
 .char.active {
   opacity: 1;
   transform: translateY(0);
-  background: linear-gradient(120deg, #fff, #999, #fff);
-  background-size: 200% 200%;
-  animation: metallicShine 8s ease-in-out infinite;
+  background: linear-gradient(
+    120deg, 
+    #ffffff 30%, 
+    #555555 38%, 
+    #ffffff 45%, 
+    #ffffff 55%, 
+    #555555 62%, 
+    #ffffff 70%
+  );
+  background-size: 200% auto;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
+  animation: shine-sweep 4s linear infinite;
 }
 
-@keyframes metallicShine {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+@keyframes shine-sweep {
+  0% { background-position: -100% center; }
+  100% { background-position: 100% center; }
 }
 
 .hero p {
@@ -579,7 +588,6 @@ footer {
     gap: 10px;
   }
   
-  /* REMOVE TITLES ON MOBILE AS REQUESTED */
   .overlay { display: none; }
   .mosaic-item img { filter: brightness(1) grayscale(0%); }
 
