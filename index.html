@@ -414,16 +414,15 @@ nav a:hover::after { width: 100%; }
 
 .reveal.active { opacity: 1; transform: translateY(0); }
 
-/* ── UPDATED "THE VISION" SECTION ──────────────────────────── */
+/* --- ABOUT SECTION --- */
 .about-section {
   padding: 120px 50px;
   max-width: 1200px;
   margin: 0 auto;
   position: relative;
-  border-top: 1px solid rgba(255, 255, 255, 0.05); /* Anchoring border */
+  border-top: 1px solid rgba(255, 255, 255, 0.05); 
 }
 
-/* Background Spotlight Effect */
 .about-section::before {
   content: '';
   position: absolute;
@@ -441,8 +440,6 @@ nav a:hover::after { width: 100%; }
   grid-template-columns: 1fr 1fr;
   gap: 80px;
   align-items: start;
-  position: relative;
-  z-index: 1;
 }
 
 .about-title {
@@ -459,11 +456,7 @@ nav a:hover::after { width: 100%; }
   letter-spacing: 0.5px;
 }
 
-.about-text b {
-  color: #fff;
-  font-weight: 600;
-}
-/* ── END UPDATED SECTION ───────────────────────────────────── */
+.about-text b { color: #fff; font-weight: 600; }
 
 footer {
   text-align: center;
@@ -529,6 +522,7 @@ footer {
 .lightbox-overlay.active { opacity: 1; pointer-events: all; }
 .lightbox-overlay.active img { transform: scale(1); }
 
+/* --- MOBILE IMPROVEMENTS --- */
 @media (max-width: 768px) {
   header, header.scrolled { padding: 15px 20px; flex-wrap: nowrap; }
   header.scrolled { padding: 12px 20px; }
@@ -542,7 +536,6 @@ footer {
 
   .hero h1 { font-size: 14vw; flex-direction: column; align-items: center; }
   .hero h1 .word { display: block; width: 100%; }
-
   .hero p { font-size: 0.75rem; padding: 0 10px; }
   
   .section-header { margin-bottom: 40px; }
@@ -559,9 +552,10 @@ footer {
     grid-auto-rows: 200px;
     gap: 10px;
   }
-  .overlay { padding: 15px; opacity: 1; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 80%); }
-  .overlay h3 { font-size: 1rem; transform: none; }
-  .overlay p { font-size: 0.6rem; transform: none; }
+  
+  /* REMOVE TITLES ON MOBILE AS REQUESTED */
+  .overlay { display: none; }
+  .mosaic-item img { filter: brightness(1) grayscale(0%); }
 
   .span-2-col, .span-2-row { grid-column: span 1; grid-row: span 1; }
 
