@@ -3,870 +3,641 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SkoedtGraphics | Portfolio</title>
+<title>Magnus Skødt Larsen | Portfolio</title>
 
 <style>
-/* CSS Reset & Base Styles */
+/* ── RESET & BASE ─────────────────────────────────────────── */
+:root {
+  --bg-color: #030303;
+  --text-main: #f4f4f4;
+  --text-muted: #666666;
+  --accent: #ffffff;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  cursor: default;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
 }
 
 body {
-  background-color: #050505;
-  color: #f0f0f0;
-  line-height: 1.6;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  line-height: 1.5;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── AMBIENT LIGHT ─────────────────────────────────────────── */
-#bg-light {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  pointer-events: none;
-  z-index: 0;
-  will-change: background;
-}
-/* ── END AMBIENT LIGHT ─────────────────────────────────────── */
-
-header, section, main, footer, .lightbox-overlay { position: relative; z-index: 1; }
-
-a, button, .hover-target, .char, .mosaic-item {
-  cursor: pointer;
+img, video {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
-h1, h2, h3 {
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  font-weight: 800;
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
-h2 {
-  font-size: 2.5rem;
-}
-
-header {
+/* ── NAVIGATION (BLEND MODE) ──────────────────────────────── */
+nav {
   position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
-  padding: 25px 50px;
+  padding: 2.5vw 4vw;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(5, 5, 5, 0);
-  backdrop-filter: blur(0px);
-  -webkit-backdrop-filter: blur(0px);
   z-index: 1000;
-  border-bottom: 1px solid rgba(255, 255, 255, 0);
-  transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+  mix-blend-mode: difference;
+  pointer-events: none; /* Let clicks pass through empty space */
 }
 
-header.scrolled {
-  background: rgba(5, 5, 5, 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 18px 50px;
+nav > * {
+  pointer-events: auto; /* Re-enable clicks for links */
 }
 
-.logo {
+.nav-logo {
   display: flex;
   align-items: center;
-  text-decoration: none;
   gap: 15px;
-  transition: all 0.4s ease;
 }
 
-.logo-img {
-  height: 40px;
+.nav-logo img {
+  height: 30px;
   width: auto;
-  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-  filter: drop-shadow(0 0 0px rgba(255,255,255,0));
+  filter: brightness(0) invert(1);
 }
 
-.logo-text {
-  color: #ffffff;
-  font-size: 0.85rem;
+.nav-logo span {
   font-weight: 700;
-  letter-spacing: 4px;
+  letter-spacing: 3px;
   text-transform: uppercase;
-  transition: color 0.4s ease;
+  font-size: 0.8rem;
 }
 
-.logo:hover .logo-img {
-  transform: scale(1.1) rotate(-3deg);
-  filter: drop-shadow(0 0 8px rgba(255,255,255,0.3));
+.nav-links {
+  display: flex;
+  gap: 40px;
 }
 
-.logo:hover .logo-text {
-  color: #aaa;
-}
-
-nav a {
-  color: #888;
-  text-decoration: none;
-  margin-left: 40px;
+.nav-links a {
   font-size: 0.75rem;
-  transition: color 0.4s ease;
   text-transform: uppercase;
   letter-spacing: 2px;
+  font-weight: 500;
   position: relative;
-  padding-bottom: 4px;
 }
 
-nav a::after {
+.nav-links a::after {
   content: '';
   position: absolute;
-  bottom: 0;
+  bottom: -4px;
   left: 0;
-  width: 0;
+  width: 0%;
   height: 1px;
-  background-color: #ffffff;
-  transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  background-color: var(--accent);
+  transition: width 0.4s var(--ease-out-expo);
 }
 
-nav a:hover { color: #ffffff; }
-nav a:hover::after { width: 100%; }
+.nav-links a:hover::after {
+  width: 100%;
+}
 
+/* ── HERO TYPOGRAPHY ──────────────────────────────────────── */
 .hero {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 0 20px;
+  justify-content: flex-end;
+  padding: 4vw;
   position: relative;
 }
 
-.hero h1 {
-  font-size: 8vw;
-  margin-bottom: 20px;
-  line-height: 1;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0 0.3em;
-}
-
-.hero h1 .word {
-  display: inline-block;
-  white-space: nowrap;
-}
-
-.char {
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 1s cubic-bezier(0.2, 0.6, 0.2, 1);
-}
-
-.char.active {
-  opacity: 1;
-  transform: translateY(0);
-  background: linear-gradient(120deg, #fff, #999, #fff);
-  background-size: 200% 200%;
-  animation: metallicShine 8s ease-in-out infinite;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-@keyframes metallicShine {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-.hero p {
-  font-size: 0.9rem;
-  letter-spacing: 3px;
+.hero-text {
+  font-size: clamp(3rem, 11vw, 12rem);
+  font-weight: 800;
+  line-height: 0.85;
   text-transform: uppercase;
-  color: #666;
-  max-width: 600px;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 2s ease-in-out;
-  transition-delay: 0.5s;
+  letter-spacing: -0.02em;
 }
 
-.hero p.active { opacity: 1; transform: translateY(0); }
-
-.scroll-indicator {
-  position: absolute;
-  bottom: 50px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 1px;
-  height: 60px;
-  background: rgba(255, 255, 255, 0.2);
-  overflow: hidden;
-}
-
-.scroll-indicator::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: #fff;
-  animation: scrollLine 2.5s cubic-bezier(0.645, 0.045, 0.355, 1) infinite;
-}
-
-@keyframes scrollLine {
-  0% { transform: translateY(-100%); }
-  50% { transform: translateY(0); }
-  100% { transform: translateY(100%); }
-}
-
-.video-section {
-  padding: 100px 0;
-  overflow: hidden;
-  width: 100%;
-}
-
-.carousel-container {
-  position: relative;
-  width: 100%;
-  max-width: 100vw;
-}
-
-.carousel-track {
-  display: flex;
-  align-items: center;
-  transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
-  will-change: transform;
-}
-
-.carousel-slide {
-  min-width: 70%;
-  margin: 0 10px;
-  position: relative;
-  transition: all 0.8s ease;
-  opacity: 0.15;
-  transform: scale(0.85);
-  filter: blur(4px) grayscale(100%);
-  pointer-events: none;
-}
-
-.carousel-slide.active {
-  opacity: 1;
-  transform: scale(1);
-  filter: blur(0) grayscale(0%);
-  pointer-events: all;
-}
-
-.carousel-slide video {
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+.hero-text span {
   display: block;
+  overflow: hidden;
+}
+
+.hero-text span i {
+  display: block;
+  font-style: normal;
+  transform: translateY(100%);
+  transition: transform 1.2s var(--ease-out-expo);
+}
+
+.hero-text span.loaded i {
+  transform: translateY(0);
+}
+
+.hero-sub {
+  margin-top: 4vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-top: 1px solid rgba(255,255,255,0.2);
+  padding-top: 2vw;
+}
+
+.hero-sub p {
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  max-width: 400px;
+}
+
+/* ── THEATER VIDEO PLAYER ─────────────────────────────────── */
+.theater-section {
+  padding: 10vw 4vw;
+  background-color: #080808;
+}
+
+.section-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: var(--text-muted);
+  margin-bottom: 3vw;
+  display: block;
+}
+
+.theater-main {
+  width: 100%;
+  aspect-ratio: 16 / 9;
   background: #000;
-}
-
-.carousel-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: #fff;
-  width: 48px;
-  height: 48px;
-  z-index: 1000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: all 0.3s ease;
-  cursor: pointer !important;
-  opacity: 0.5;
-}
-
-.carousel-btn:hover {
-  opacity: 1;
-  transform: translateY(-50%) scale(1.2);
-}
-
-.carousel-btn svg {
-  width: 32px;
-  height: 32px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2.5;
-  filter: drop-shadow(0 0 6px rgba(0,0,0,0.8));
-}
-
-.carousel-btn.prev { left: 40px; }
-.carousel-btn.next { right: 40px; }
-
-.portfolio-section {
-  padding: 120px 50px;
-  max-width: 1800px;
-  margin: 0 auto;
-}
-
-.section-header {
-  text-align: center;
-  margin-bottom: 60px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-}
-
-.section-header h2 {
-  font-size: 3rem;
-  letter-spacing: 8px;
-  background: linear-gradient(120deg, #ffffff, #555555);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  padding-bottom: 20px;
-  position: relative;
-  margin-bottom: 0;
-}
-
-.section-header h2::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 50px;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.15);
-}
-
-.mosaic-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: 350px;
-  gap: 15px;
-}
-
-.mosaic-item {
-  position: relative;
+  border-radius: 4px;
   overflow: hidden;
-  background-color: #111;
-  border-radius: 12px;
+  position: relative;
 }
 
-.mosaic-item a {
-  text-decoration: none;
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.mosaic-item img {
+.theater-main video {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1), filter 1.2s ease;
-  filter: brightness(0.7) grayscale(20%);
+  transition: opacity 0.4s ease;
 }
 
-.span-2-col { grid-column: span 2; }
-.span-2-row { grid-row: span 2; }
-
-.overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 60%);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 40px;
+.theater-main video.fade-out {
   opacity: 0;
-  transition: opacity 0.6s ease;
 }
 
-.mosaic-item .overlay h3 {
-  font-size: 1.5rem;
-  color: #ffffff !important;
-  transform: translateY(15px);
-  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+.theater-thumbs {
+  display: flex;
+  gap: 1.5vw;
+  margin-top: 1.5vw;
 }
 
-.mosaic-item .overlay p {
+.thumb-btn {
+  width: 180px;
+  aspect-ratio: 16 / 9;
+  background: #111;
+  border: none;
+  cursor: pointer;
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+  opacity: 0.5;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.thumb-btn:hover {
+  opacity: 0.8;
+}
+
+.thumb-btn.active {
+  opacity: 1;
+  border: 1px solid var(--accent);
+}
+
+.thumb-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── ASYMMETRICAL GALLERY ─────────────────────────────────── */
+.gallery-section {
+  padding: 10vw 4vw;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8vw 4vw;
+}
+
+/* Stagger every even item downwards */
+.gallery-item:nth-child(even) {
+  margin-top: 15vw;
+}
+
+.gallery-image-wrapper {
+  overflow: hidden;
+  background: #111;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.gallery-image-wrapper img {
+  transform: scale(1);
+  transition: transform 1.2s var(--ease-out-expo), filter 0.8s ease;
+  filter: grayscale(100%) contrast(1.1);
+}
+
+.gallery-item:hover .gallery-image-wrapper img {
+  transform: scale(1.05);
+  filter: grayscale(0%) contrast(1);
+}
+
+.gallery-meta {
+  margin-top: 1.5vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.gallery-meta h3 {
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.gallery-meta p {
   font-size: 0.75rem;
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: #cccccc !important;
-  margin-top: 5px;
-  transform: translateY(15px);
-  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-  transition-delay: 0.05s;
 }
 
-.mosaic-item:hover img { transform: scale(1.05); filter: brightness(1) grayscale(0%); }
-.mosaic-item:hover .overlay { opacity: 1; }
-.mosaic-item:hover .overlay h3, .mosaic-item:hover .overlay p { transform: translateY(0); }
-
-.reveal {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1);
+/* ── ABOUT & FOOTER ───────────────────────────────────────── */
+.footer-section {
+  padding: 15vw 4vw 4vw;
+  background-color: var(--accent);
+  color: var(--bg-color);
 }
 
-.reveal.active { opacity: 1; transform: translateY(0); }
-
-/* --- ABOUT SECTION --- */
-.about-section {
-  padding: 120px 50px;
-  max-width: 1200px;
-  margin: 0 auto;
-  position: relative;
-  border-top: 1px solid rgba(255, 255, 255, 0.05); 
+.footer-section .section-label {
+  color: #888;
 }
 
-.about-section::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 50%;
-  transform: translateX(-50%);
-  width: 100vw;
-  height: 100%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(5, 5, 5, 0) 100%);
-  z-index: -1;
-  pointer-events: none;
-}
-
-.about-content {
+.footer-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: start;
+  gap: 10vw;
+  margin-bottom: 15vw;
 }
 
-.about-title {
-  font-size: 1.2rem;
-  letter-spacing: 6px;
-  color: #ffffff;
-  margin-bottom: 30px;
+.footer-text {
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 500;
+  line-height: 1.3;
 }
 
-.about-text {
-  color: #888;
-  font-size: 1.1rem;
-  line-height: 1.8;
-  letter-spacing: 0.5px;
-}
-
-.about-text b { color: #fff; font-weight: 600; }
-
-footer {
-  text-align: center;
-  padding: 120px 50px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.contact-link {
-  display: inline-block;
-  color: #fff;
-  text-decoration: none;
-  font-size: 0.8rem;
-  letter-spacing: 3px;
+.massive-link {
+  font-size: clamp(3rem, 12vw, 15rem);
+  font-weight: 800;
   text-transform: uppercase;
-  font-weight: 700;
-  padding: 18px 40px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50px;
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-  margin-bottom: 50px;
-}
-
-.contact-link:hover {
-  background-color: #ffffff;
-  color: #000000;
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
-  border-color: #ffffff;
-}
-
-/* --- SOCIAL MEDIA ADDITIONS --- */
-.social-links {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  margin-bottom: 40px;
-}
-
-.social-link {
-  color: rgba(255, 255, 255, 0.4);
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-  display: inline-block;
-}
-
-.social-link:hover {
-  color: #ffffff;
-  transform: translateY(-3px);
-}
-
-.social-link svg {
-  width: 24px;
-  height: 24px;
-  fill: currentColor;
-}
-
-.copyright {
+  letter-spacing: -0.03em;
   display: block;
-  font-size: 0.65rem;
-  color: #444;
-  letter-spacing: 2px;
-  text-transform: uppercase;
+  text-align: center;
+  border-top: 2px solid var(--bg-color);
+  border-bottom: 2px solid var(--bg-color);
+  padding: 2vw 0;
+  transition: color 0.4s ease, background-color 0.4s ease;
 }
 
-.lightbox-overlay {
+.massive-link:hover {
+  background-color: var(--bg-color);
+  color: var(--accent);
+}
+
+.footer-bottom {
+  margin-top: 4vw;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.footer-socials a {
+  margin-left: 30px;
+  transition: opacity 0.3s ease;
+}
+
+.footer-socials a:hover {
+  opacity: 0.5;
+}
+
+/* ── LIGHTBOX ─────────────────────────────────────────────── */
+.lightbox {
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.95);
+  inset: 0;
+  background: rgba(3, 3, 3, 0.95);
   backdrop-filter: blur(10px);
+  z-index: 2000;
   display: flex;
   justify-content: center;
   align-items: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.4s ease;
-  z-index: 2000;
+  transition: opacity 0.5s var(--ease-out-expo);
 }
 
-.lightbox-overlay img {
-  max-width: 85%;
-  max-height: 85vh;
-  border-radius: 8px;
+.lightbox.active {
+  opacity: 1;
+  pointer-events: all;
+  cursor: zoom-out;
+}
+
+.lightbox img {
+  max-width: 90%;
+  max-height: 90vh;
   object-fit: contain;
-  transform: scale(0.95);
-  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transform: scale(0.9);
+  transition: transform 0.5s var(--ease-out-expo);
 }
 
-.lightbox-overlay.active { opacity: 1; pointer-events: all; }
-.lightbox-overlay.active img { transform: scale(1); }
+.lightbox.active img {
+  transform: scale(1);
+}
 
-/* --- MOBILE IMPROVEMENTS --- */
+/* ── SCROLL REVEAL ────────────────────────────────────────── */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(60px);
+  transition: opacity 1s var(--ease-out-expo), transform 1s var(--ease-out-expo);
+}
+
+.reveal-up.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── MOBILE RESPONSIVENESS ────────────────────────────────── */
 @media (max-width: 768px) {
-  header, header.scrolled { padding: 15px 20px; flex-wrap: nowrap; }
-  header.scrolled { padding: 12px 20px; }
+  .nav-links { display: none; }
+  .hero-sub { flex-direction: column; gap: 20px; align-items: flex-start; }
+  .theater-thumbs { overflow-x: auto; padding-bottom: 10px; }
+  .thumb-btn { min-width: 140px; }
   
-  nav { display: flex; align-items: center; white-space: nowrap; }
+  .gallery-grid { grid-template-columns: 1fr; gap: 15vw; }
+  .gallery-item:nth-child(even) { margin-top: 0; }
   
-  .logo-text { font-size: 0.7rem; letter-spacing: 2px; }
-  nav a { margin-left: 15px; font-size: 0.65rem; }
-
-  h2 { font-size: 1.6rem !important; }
-
-  .hero h1 { font-size: 14vw; flex-direction: column; align-items: center; }
-  .hero h1 .word { display: block; width: 100%; }
-  .hero p { font-size: 0.75rem; padding: 0 10px; }
-  
-  .section-header { margin-bottom: 40px; }
-  .section-header h2 { font-size: 2rem !important; letter-spacing: 4px; padding-bottom: 15px; }
-
-  .video-section { padding: 40px 0; }
-  .carousel-slide { min-width: 85%; margin: 0 5px; }
-  .carousel-btn.prev { left: 10px; }
-  .carousel-btn.next { right: 10px; }
-
-  .portfolio-section { padding: 30px 15px; }
-  .mosaic-grid {
-    grid-template-columns: repeat(2, 1fr);
-    grid-auto-rows: 200px;
-    gap: 10px;
-  }
-  
-  /* REMOVE TITLES ON MOBILE AS REQUESTED */
-  .overlay { display: none; }
-  .mosaic-item img { filter: brightness(1) grayscale(0%); }
-
-  .span-2-col, .span-2-row { grid-column: span 1; grid-row: span 1; }
-
-  .about-section { padding: 60px 25px; }
-  .about-content { grid-template-columns: 1fr; gap: 40px; }
-
-  footer { padding: 80px 20px; }
-  footer h2 { font-size: 1.2rem !important; }
-  .contact-link { padding: 14px 30px; font-size: 0.7rem; }
-  .social-links { gap: 20px; margin-bottom: 30px; }
+  .footer-content { grid-template-columns: 1fr; gap: 40px; }
+  .footer-bottom { flex-direction: column; gap: 20px; align-items: center; }
+  .footer-socials a { margin: 0 15px; }
 }
 </style>
 </head>
 <body>
 
-<div id="bg-light"></div>
-
-<header id="main-header">
-  <a href="#" class="logo">
-    <img src="SG logo transparent.png" alt="SG Logo" class="logo-img">
-    <span class="logo-text">SkoedtGraphics</span>
+<nav>
+  <a href="#" class="nav-logo">
+    <img src="SG logo transparent.png" alt="Logo">
+    <span>SkoedtGraphics</span>
   </a>
-  <nav>
-    <a href="#work">Work</a>
+  <div class="nav-links">
+    <a href="#motion">Motion</a>
+    <a href="#works">Works</a>
     <a href="#contact">Contact</a>
-  </nav>
+  </div>
+</nav>
+
+<header class="hero">
+  <h1 class="hero-text">
+    <span><i>Visual</i></span>
+    <span><i>Innovation</i></span>
+  </h1>
+  <div class="hero-sub">
+    <p>Concept, design & execution by<br>Magnus Skødt Larsen. Based in Denmark.</p>
+    <p>Scroll to explore</p>
+  </div>
 </header>
 
-<section class="hero" id="about">
-  <h1>
-    <span class="word">Visual</span>
-    <span class="word">Innovation</span>
-  </h1>
-  <p class="reveal">Concept, design & execution by Magnus Skødt Larsen</p>
-  <div class="scroll-indicator"></div>
-</section>
-
-<section class="video-section reveal">
-  <div class="section-header reveal">
-    <h2>Video Editing</h2>
-  </div>
-
-  <div class="carousel-container">
-    <button class="carousel-btn prev">
-      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-    </button>
-
-    <div class="carousel-track">
-      <div class="carousel-slide">
-        <video controls poster="roverimg.PNG">
-          <source src="rover.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="carousel-slide">
-        <video controls poster="lacthumb.PNG">
-          <source src="" type="video/mp4">
-        </video>
-      </div>
-      <div class="carousel-slide">
-        <video controls poster="placeholder2.png">
-          <source src="video3.mp4" type="video/mp4">
-        </video>
-      </div>
-    </div>
-
-    <button class="carousel-btn next">
-      <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
-    </button>
-  </div>
-</section>
-
-<main class="portfolio-section" id="work">
-  <div class="section-header reveal">
-    <h2>Selected Graphics</h2>
+<section class="theater-section" id="motion">
+  <span class="section-label reveal-up">01 — Motion & Video</span>
+  
+  <div class="theater-main reveal-up">
+    <video id="main-video" controls poster="roverimg.PNG">
+      <source src="rover.mp4" type="video/mp4">
+    </video>
   </div>
   
-  <div class="mosaic-grid">
-    <div class="mosaic-item span-2-col span-2-row reveal">
-      <a href="aab2.png" class="lightbox-link">
+  <div class="theater-thumbs reveal-up">
+    <button class="thumb-btn active" data-src="rover.mp4" data-poster="roverimg.PNG">
+      <img src="roverimg.PNG" alt="Rover Video">
+    </button>
+    <button class="thumb-btn" data-src="" data-poster="lacthumb.PNG">
+      <img src="lacthumb.PNG" alt="Lacoste Video">
+    </button>
+    <button class="thumb-btn" data-src="video3.mp4" data-poster="placeholder2.png">
+      <img src="placeholder2.png" alt="Video 3">
+    </button>
+  </div>
+</section>
+
+<section class="gallery-section" id="works">
+  <span class="section-label reveal-up">02 — Selected Graphics</span>
+  
+  <div class="gallery-grid">
+    
+    <div class="gallery-item reveal-up">
+      <div class="gallery-image-wrapper lightbox-trigger" data-img="aab2.png">
         <img src="aab2.png" alt="Player Poster">
-        <div class="overlay"><h3>Player Poster</h3><p>Photoshop & Indesign</p></div>
-      </a>
+      </div>
+      <div class="gallery-meta">
+        <h3>Player Poster</h3>
+        <p>PS / ID</p>
+      </div>
     </div>
-    <div class="mosaic-item span-2-row reveal">
-      <a href="marley.png" class="lightbox-link">
-        <img src="marley.png" alt="Marley Poster">
-        <div class="overlay"><h3>Marley Poster</h3><p>Photoshop</p></div>
-      </a>
-    </div>
-    <div class="mosaic-item span-2-row reveal">
-      <a href="f1.png" class="lightbox-link">
-        <img src="f1.png" alt="F1 Poster">
-        <div class="overlay"><h3>F1 Poster</h3><p>Photoshop</p></div>
-      </a>
-    </div>
-    <div class="mosaic-item span-2-col reveal">
-      <a href="lac.PNG" class="lightbox-link">
-        <img src="lac.PNG" alt="Lacoste Abribus">
-        <div class="overlay"><h3>Lacoste Abribus</h3><p>Photoshop</p></div>
-      </a>
-    </div>
-    <div class="mosaic-item span-2-col reveal">
-      <a href="aab1.png" class="lightbox-link">
-        <img src="aab1.png" alt="Matchday Poster">
-        <div class="overlay"><h3>Matchday Poster</h3><p>Photoshop</p></div>
-      </a>
-    </div>
-    <div class="mosaic-item span-2-row reveal">
-      <a href="final.png" class="lightbox-link">
-        <img src="final.png" alt="Movie Poster">
-        <div class="overlay"><h3>Movie Poster</h3><p>Illustrator</p></div>
-      </a>
-    </div>
-    <div class="mosaic-item reveal">
-      <a href="frontier.jpg" class="lightbox-link">
-        <img src="frontier.jpg" alt="Movie Poster">
-        <div class="overlay"><h3>Movie Poster</h3><p>Photoshop</p></div>
-      </a>
-    </div>
-    <div class="mosaic-item span-2-col reveal">
-      <a href="kaffe.png" class="lightbox-link">
-        <img src="kaffe.png" alt="Campaign Mockup">
-        <div class="overlay"><h3>Campaign Mockup</h3><p>Photoshop</p></div>
-      </a>
-    </div>
-    <div class="mosaic-item span-2-row reveal">
-      <a href="aab4.jpg" class="lightbox-link">
-        <img src="aab4.jpg" alt="Lineup Graphic">
-        <div class="overlay"><h3>Lineup Graphic</h3><p>Illustrator & Photoshop</p></div>
-      </a>
-    </div>
-    <div class="mosaic-item reveal">
-      <a href="kropsind.PNG" class="lightbox-link">
-        <img src="kropsind.PNG" alt="Catalog Cover">
-        <div class="overlay"><h3>Catalog Cover</h3><p>Photoshop & Indesign</p></div>
-      </a>
-    </div>
-    <div class="mosaic-item span-2-col reveal">
-      <a href="doterra.PNG" class="lightbox-link">
-        <img src="doterra.PNG" alt="Product Showcase">
-        <div class="overlay"><h3>Product Showcase</h3><p>Photoshop</p></div>
-      </a>
-    </div>
-  </div>
-</main>
 
-<section class="about-section reveal">
-  <div class="section-header reveal">
-    <h2>The Vision</h2>
-  </div>
-  <div class="about-content">
-    <div class="about-column">
-      <h3 class="about-title">About me</h3>
-      <p class="about-text">
-        Based in Denmark, I specialize in crafting <b>high-impact visual narratives</b>. 
-        My work sits at the intersection of technical precision and artistic exploration, 
-        focusing on graphic design and professional video post-production.
-      </p>
+    <div class="gallery-item reveal-up">
+      <div class="gallery-image-wrapper lightbox-trigger" data-img="marley.png">
+        <img src="marley.png" alt="Marley Poster">
+      </div>
+      <div class="gallery-meta">
+        <h3>Marley Poster</h3>
+        <p>Photoshop</p>
+      </div>
     </div>
-    <div class="about-column">
-      <h3 class="about-title">The Philosophy</h3>
-      <p class="about-text">
-        Every project is an opportunity to push the boundaries of <b>visual innovation</b>. 
-        Whether it’s a minimalist poster or a complex edit, I believe in a philosophy 
-        of "Less, but better"—stripping away the noise to let the core message shine 
-        with clarity and power.
-      </p>
+
+    <div class="gallery-item reveal-up">
+      <div class="gallery-image-wrapper lightbox-trigger" data-img="lac.PNG">
+        <img src="lac.PNG" alt="Lacoste Abribus">
+      </div>
+      <div class="gallery-meta">
+        <h3>Lacoste Abribus</h3>
+        <p>Photoshop</p>
+      </div>
     </div>
+
+    <div class="gallery-item reveal-up">
+      <div class="gallery-image-wrapper lightbox-trigger" data-img="aab1.png">
+        <img src="aab1.png" alt="Matchday Poster">
+      </div>
+      <div class="gallery-meta">
+        <h3>Matchday Poster</h3>
+        <p>Photoshop</p>
+      </div>
+    </div>
+
+    <div class="gallery-item reveal-up">
+      <div class="gallery-image-wrapper lightbox-trigger" data-img="final.png">
+        <img src="final.png" alt="Movie Poster">
+      </div>
+      <div class="gallery-meta">
+        <h3>Movie Poster 1</h3>
+        <p>Illustrator</p>
+      </div>
+    </div>
+
+    <div class="gallery-item reveal-up">
+      <div class="gallery-image-wrapper lightbox-trigger" data-img="frontier.jpg">
+        <img src="frontier.jpg" alt="Movie Poster">
+      </div>
+      <div class="gallery-meta">
+        <h3>Movie Poster 2</h3>
+        <p>Photoshop</p>
+      </div>
+    </div>
+
+    <div class="gallery-item reveal-up">
+      <div class="gallery-image-wrapper lightbox-trigger" data-img="f1.png">
+        <img src="f1.png" alt="F1 Poster">
+      </div>
+      <div class="gallery-meta">
+        <h3>F1 Poster</h3>
+        <p>Photoshop</p>
+      </div>
+    </div>
+
+    <div class="gallery-item reveal-up">
+      <div class="gallery-image-wrapper lightbox-trigger" data-img="aab4.jpg">
+        <img src="aab4.jpg" alt="Lineup Graphic">
+      </div>
+      <div class="gallery-meta">
+        <h3>Lineup Graphic</h3>
+        <p>AI / PS</p>
+      </div>
+    </div>
+
   </div>
 </section>
 
-<footer id="contact" class="reveal">
-  <h2>Let's build something together.</h2>
-  <br><br>
-  <a href="mailto:magnusskoedtlarsen@hotmail.com" class="contact-link">Get in Touch</a>
+<footer class="footer-section" id="contact">
+  <span class="section-label reveal-up">03 — Information</span>
   
-  <div class="social-links">
-    <a href="https://instagram.com/magnusskoedt" target="_blank" class="social-link" rel="noopener" title="Instagram">
-      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-    </a>
-    <a href="https://linkedin.com/in/magnusskødtlarsen" target="_blank" class="social-link" rel="noopener" title="LinkedIn">
-      <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-    </a>
+  <div class="footer-content reveal-up">
+    <p class="footer-text">
+      My work sits at the intersection of technical precision and artistic exploration. I believe in stripping away the noise to let the core message shine.
+    </p>
+    <p class="footer-text">
+      Specializing in crafting high-impact visual narratives through graphic design and professional video post-production.
+    </p>
   </div>
 
-  <span class="copyright">&copy; 2026 SKOEDTGRAPHICS</span>
+  <a href="mailto:magnusskoedtlarsen@hotmail.com" class="massive-link reveal-up">Let's Talk</a>
+
+  <div class="footer-bottom reveal-up">
+    <span>&copy; 2026 Magnus Skødt Larsen</span>
+    <div class="footer-socials">
+      <a href="https://instagram.com/magnusskoedt" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://linkedin.com/in/magnusskødtlarsen" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
 </footer>
 
-<div class="lightbox-overlay" id="lightbox">
-  <img src="" alt="Full view">
+<div class="lightbox" id="lightbox">
+  <img src="" alt="Full view" id="lightbox-img">
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
-  const header = document.getElementById('main-header');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) header.classList.add('scrolled');
-    else header.classList.remove('scrolled');
-  });
-
-  const bgLight = document.getElementById('bg-light');
-  let lastTime = null;
-  let elapsed = 0;
-  function animateLight(ts) {
-    if (!lastTime) lastTime = ts;
-    elapsed += ts - lastTime;
-    lastTime = ts;
-    const srcX = -18 + 14 * Math.sin(0.000038 * elapsed);          
-    const srcY = -22 + 12 * Math.sin(0.000027 * elapsed + (Math.PI * 0.6)); 
-    bgLight.style.background = [
-      `radial-gradient(ellipse 140vw 110vh at ${srcX.toFixed(1)}% ${srcY.toFixed(1)}%, rgba(255,252,245,0.11) 0%, transparent 75%)`,
-      `radial-gradient(ellipse 90vw 60vh at ${(srcX + 8).toFixed(1)}% ${(srcY - 5).toFixed(1)}%, rgba(210,225,255,0.045) 0%, transparent 65%)`
-    ].join(', ');
-    requestAnimationFrame(animateLight);
-  }
-  requestAnimationFrame(animateLight);
-
-  const words = document.querySelectorAll('.hero h1 .word');
-  let charIndex = 0;
-  words.forEach((word) => {
-    const text = word.textContent;
-    word.textContent = '';
-    [...text].forEach((char) => {
-      const span = document.createElement('span');
-      span.textContent = char;
-      span.className = 'char';
-      span.style.transitionDelay = `${charIndex * 0.05}s`;
-      word.appendChild(span);
-      charIndex++;
-    });
-  });
-
+  // --- HERO LOAD ANIMATION ---
   setTimeout(() => {
-    document.querySelectorAll('.char').forEach(c => c.classList.add('active'));
-    document.querySelector('.hero p').classList.add('active');
+    document.querySelectorAll('.hero-text span').forEach((span, index) => {
+      setTimeout(() => span.classList.add('loaded'), index * 150);
+    });
   }, 100);
 
+  // --- SCROLL REVEALS ---
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) entry.target.classList.add('active');
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        // Optional: unobserve after revealing
+        observer.unobserve(entry.target);
+      }
     });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
 
+  document.querySelectorAll('.reveal-up').forEach(el => observer.observe(el));
+
+  // --- THEATER VIDEO PLAYER LOGIC ---
+  const mainVideo = document.getElementById('main-video');
+  const videoSource = mainVideo.querySelector('source');
+  const thumbBtns = document.querySelectorAll('.thumb-btn');
+
+  thumbBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Remove active state from all
+      thumbBtns.forEach(b => b.classList.remove('active'));
+      // Add active state to clicked
+      btn.classList.add('active');
+
+      // Fade out video
+      mainVideo.classList.add('fade-out');
+
+      setTimeout(() => {
+        // Update source and poster
+        mainVideo.setAttribute('poster', btn.dataset.poster);
+        videoSource.setAttribute('src', btn.dataset.src);
+        mainVideo.load();
+        
+        // Play if there is a source
+        if(btn.dataset.src) {
+            mainVideo.play().catch(e => console.log("Autoplay prevented"));
+        }
+        
+        // Fade back in
+        mainVideo.classList.remove('fade-out');
+      }, 400); // Matches CSS transition duration
+    });
+  });
+
+  // --- LIGHTBOX LOGIC ---
   const lightbox = document.getElementById('lightbox');
-  const lightboxImg = lightbox.querySelector('img');
-  document.querySelectorAll('.lightbox-link').forEach(link => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      lightboxImg.src = link.href;
+  const lightboxImg = document.getElementById('lightbox-img');
+  const triggers = document.querySelectorAll('.lightbox-trigger');
+
+  triggers.forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      lightboxImg.src = trigger.dataset.img;
       lightbox.classList.add('active');
       document.body.style.overflow = 'hidden';
     });
   });
+
   lightbox.addEventListener('click', () => {
     lightbox.classList.remove('active');
     document.body.style.overflow = 'auto';
   });
 
-  const track = document.querySelector('.carousel-track');
-  const slides = Array.from(track.children);
-  const nextButton = document.querySelector('.carousel-btn.next');
-  const prevButton = document.querySelector('.carousel-btn.prev');
-  let currentSlideIndex = 0;
-
-  const updateCarousel = () => {
-    const containerWidth = document.querySelector('.carousel-container').offsetWidth;
-    const slideWidth = slides[0].offsetWidth;
-    const gap = window.innerWidth <= 768 ? 10 : 20;
-    const offset = (containerWidth / 2) - (slideWidth / 2) - (currentSlideIndex * (slideWidth + gap));
-    track.style.transform = `translateX(${offset}px)`;
-    slides.forEach((slide, index) => {
-      if (index === currentSlideIndex) slide.classList.add('active');
-      else {
-        slide.classList.remove('active');
-        const video = slide.querySelector('video');
-        if (video) video.pause();
-      }
-    });
-  };
-
-  nextButton.addEventListener('click', () => { currentSlideIndex = (currentSlideIndex + 1) % slides.length; updateCarousel(); });
-  prevButton.addEventListener('click', () => { currentSlideIndex = (currentSlideIndex - 1 + slides.length) % slides.length; updateCarousel(); });
-  updateCarousel();
-  window.addEventListener('resize', updateCarousel);
 });
 </script>
 </body>
