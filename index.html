@@ -164,32 +164,31 @@ nav a:hover::after { width: 100%; }
   display: inline-block;
   opacity: 0;
   transform: translateY(30px);
-  /* Limit transition to specific properties so it doesn't interfere with the background animation */
   transition: opacity 1s cubic-bezier(0.2, 0.6, 0.2, 1), transform 1s cubic-bezier(0.2, 0.6, 0.2, 1);
 }
 
+/* ── REFINED SHINE EFFECT ── */
 .char.active {
   opacity: 1;
   transform: translateY(0);
   background: linear-gradient(
-    120deg, 
-    #ffffff 30%, 
-    #555555 38%, 
-    #ffffff 45%, 
-    #ffffff 55%, 
-    #555555 62%, 
-    #ffffff 70%
+    110deg, 
+    #ffffff 40%, 
+    #a0a0a0 50%, 
+    #ffffff 60%
   );
-  background-size: 200% auto;
+  background-size: 300% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: shine-sweep 4s linear infinite;
+  animation: shine-fade 8s ease-in-out infinite;
+  color: #fff; /* Fallback */
 }
 
-@keyframes shine-sweep {
-  0% { background-position: -100% center; }
-  100% { background-position: 100% center; }
+@keyframes shine-fade {
+  0% { background-position: 100% 0%; }
+  50% { background-position: 0% 0%; }
+  100% { background-position: 100% 0%; }
 }
 
 .hero p {
