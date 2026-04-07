@@ -514,11 +514,13 @@ footer {
 }
 
 .copyright {
-  display: block;
+  display: inline-block;
   font-size: 0.65rem;
   color: #444;
   letter-spacing: 2px;
   text-transform: uppercase;
+  user-select: none;
+  cursor: default;
 }
 
 .lightbox-overlay {
@@ -592,6 +594,39 @@ footer {
   footer h2 { font-size: 1.2rem !important; }
   .contact-link { padding: 14px 30px; font-size: 0.7rem; }
   .social-links { gap: 20px; margin-bottom: 30px; }
+}
+
+/* --- HIDDEN GAME --- */
+.game-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.95);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  z-index: 3000;
+}
+
+.game-overlay.active { opacity: 1; pointer-events: all; }
+
+.game-container {
+  background: #111;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #333;
+  box-shadow: 0 0 30px rgba(0,255,0,0.05);
+}
+
+#gameCanvas {
+  background: #000;
+  border: 1px solid #333;
+  display: block;
+  margin-top: 15px;
 }
 </style>
 </head>
@@ -774,6 +809,14 @@ footer {
   <img src="" alt="Full view">
 </div>
 
+<div class="game-overlay" id="gameOverlay">
+  <div class="game-container">
+    <h3 style="color: #4CAF50; text-align: center; font-family: monospace; letter-spacing: 2px; font-size: 1.2rem;">SNAKE</h3>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <p style="color: #666; text-align: center; font-family: monospace; font-size: 0.75rem; margin-top: 15px; letter-spacing: 1px;">Click anywhere outside to close</p>
+  </div>
+</div>
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -868,6 +911,107 @@ document.addEventListener('DOMContentLoaded', () => {
   prevButton.addEventListener('click', () => { currentSlideIndex = (currentSlideIndex - 1 + slides.length) % slides.length; updateCarousel(); });
   updateCarousel();
   window.addEventListener('resize', updateCarousel);
+
+  // --- HIDDEN GAME LOGIC ---
+  const copyrightText = document.querySelector('.copyright');
+  let clickCount = 0;
+  let clickTimer;
+  const gameOverlay = document.getElementById('gameOverlay');
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+  let gameLoop;
+  let snake, food, dx, dy, score;
+
+  copyrightText.addEventListener('click', () => {
+    clickCount++;
+    clearTimeout(clickTimer);
+    clickTimer = setTimeout(() => { clickCount = 0; }, 1000);
+    
+    if (clickCount === 5) {
+      startGame();
+      clickCount = 0;
+    }
+  });
+
+  gameOverlay.addEventListener('click', (e) => {
+    if (e.target === gameOverlay) stopGame();
+  });
+
+  function startGame() {
+    gameOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    
+    snake = [{x: 200, y: 200}];
+    food = {x: Math.floor(Math.random() * 20) * 20, y: Math.floor(Math.random() * 20) * 20};
+    dx = 20; dy = 0; score = 0;
+    
+    if (gameLoop) clearInterval(gameLoop);
+    gameLoop = setInterval(drawGame, 100);
+    document.addEventListener('keydown', changeDirection);
+  }
+
+  function stopGame() {
+    gameOverlay.classList.remove('active');
+    document.body.style.overflow = 'auto';
+    clearInterval(gameLoop);
+    document.removeEventListener('keydown', changeDirection);
+  }
+
+  function changeDirection(event) {
+    const LEFT_KEY = 37;
+    const RIGHT_KEY = 39;
+    const UP_KEY = 38;
+    const DOWN_KEY = 40;
+
+    if ([LEFT_KEY, RIGHT_KEY, UP_KEY, DOWN_KEY].includes(event.keyCode)) {
+      event.preventDefault(); // Stop window from scrolling while playing
+    }
+
+    const keyPressed = event.keyCode;
+    const goingUp = dy === -20;
+    const goingDown = dy === 20;
+    const goingRight = dx === 20;
+    const goingLeft = dx === -20;
+
+    if (keyPressed === LEFT_KEY && !goingRight) { dx = -20; dy = 0; }
+    if (keyPressed === UP_KEY && !goingDown) { dx = 0; dy = -20; }
+    if (keyPressed === RIGHT_KEY && !goingLeft) { dx = 20; dy = 0; }
+    if (keyPressed === DOWN_KEY && !goingUp) { dx = 0; dy = 20; }
+  }
+
+  function drawGame() {
+    const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+    snake.unshift(head);
+
+    const hasEatenFood = snake[0].x === food.x && snake[0].y === food.y;
+    
+    if (hasEatenFood) {
+      score += 10;
+      food = {x: Math.floor(Math.random() * 20) * 20, y: Math.floor(Math.random() * 20) * 20};
+    } else {
+      snake.pop();
+    }
+
+    // Check game over
+    if (head.x < 0 || head.x >= 400 || head.y < 0 || head.y >= 400 || 
+        snake.slice(1).some(segment => segment.x === head.x && segment.y === head.y)) {
+      stopGame();
+      alert("Game Over! Score: " + score);
+      return;
+    }
+
+    // Draw board
+    ctx.fillStyle = '#050505';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Draw Food
+    ctx.fillStyle = '#ff3333';
+    ctx.fillRect(food.x, food.y, 20, 20);
+
+    // Draw Snake
+    ctx.fillStyle = '#4CAF50';
+    snake.forEach(part => ctx.fillRect(part.x, part.y, 19, 19));
+  }
 });
 </script>
 </body>
