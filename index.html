@@ -581,7 +581,6 @@ footer {
     gap: 10px;
   }
   
-  /* REMOVE TITLES ON MOBILE AS REQUESTED */
   .overlay { display: none; }
   .mosaic-item img { filter: brightness(1) grayscale(0%); }
 
@@ -620,6 +619,7 @@ footer {
   border-radius: 8px;
   border: 1px solid #333;
   box-shadow: 0 0 30px rgba(0,255,0,0.05);
+  max-width: 95vw;
 }
 
 #gameCanvas {
@@ -627,6 +627,8 @@ footer {
   border: 1px solid #333;
   display: block;
   margin-top: 15px;
+  max-width: 100%;
+  cursor: pointer;
 }
 </style>
 </head>
@@ -811,9 +813,9 @@ footer {
 
 <div class="game-overlay" id="gameOverlay">
   <div class="game-container">
-    <h3 style="color: #4CAF50; text-align: center; font-family: monospace; letter-spacing: 2px; font-size: 1.2rem;">SNAKE</h3>
+    <h3 style="color: #4CAF50; text-align: center; font-family: monospace; letter-spacing: 2px; font-size: 1.2rem;">JUMPER</h3>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
-    <p style="color: #666; text-align: center; font-family: monospace; font-size: 0.75rem; margin-top: 15px; letter-spacing: 1px;">Click anywhere outside to close</p>
+    <p style="color: #666; text-align: center; font-family: monospace; font-size: 0.75rem; margin-top: 15px; letter-spacing: 1px;">Tap canvas or press space to jump<br>Click outside to close</p>
   </div>
 </div>
 
@@ -920,7 +922,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const canvas = document.getElementById('gameCanvas');
   const ctx = canvas.getContext('2d');
   let gameLoop;
-  let snake, food, dx, dy, score;
+  let birdY, birdVelocity, birdGravity, pipes, score, isGameOver, frameCount;
 
   copyrightText.addEventListener('click', () => {
     clickCount++;
@@ -937,80 +939,110 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target === gameOverlay) stopGame();
   });
 
+  function jump(e) {
+    if (e) e.preventDefault();
+    if (isGameOver) {
+      resetGame();
+    } else {
+      birdVelocity = -6;
+    }
+  }
+
+  canvas.addEventListener('touchstart', jump, {passive: false});
+  canvas.addEventListener('mousedown', jump);
+  document.addEventListener('keydown', (e) => {
+    if(gameOverlay.classList.contains('active') && (e.code === 'Space' || e.code === 'ArrowUp')) {
+      jump(e);
+    }
+  });
+
+  function resetGame() {
+    birdY = 200;
+    birdVelocity = 0;
+    birdGravity = 0.4;
+    pipes = [];
+    score = 0;
+    isGameOver = false;
+    frameCount = 0;
+  }
+
   function startGame() {
     gameOverlay.classList.add('active');
     document.body.style.overflow = 'hidden';
-    
-    snake = [{x: 200, y: 200}];
-    food = {x: Math.floor(Math.random() * 20) * 20, y: Math.floor(Math.random() * 20) * 20};
-    dx = 20; dy = 0; score = 0;
+    resetGame();
     
     if (gameLoop) clearInterval(gameLoop);
-    gameLoop = setInterval(drawGame, 100);
-    document.addEventListener('keydown', changeDirection);
+    gameLoop = setInterval(updateGame, 20); // 50 fps
   }
 
   function stopGame() {
     gameOverlay.classList.remove('active');
     document.body.style.overflow = 'auto';
     clearInterval(gameLoop);
-    document.removeEventListener('keydown', changeDirection);
   }
 
-  function changeDirection(event) {
-    const LEFT_KEY = 37;
-    const RIGHT_KEY = 39;
-    const UP_KEY = 38;
-    const DOWN_KEY = 40;
-
-    if ([LEFT_KEY, RIGHT_KEY, UP_KEY, DOWN_KEY].includes(event.keyCode)) {
-      event.preventDefault(); // Stop window from scrolling while playing
-    }
-
-    const keyPressed = event.keyCode;
-    const goingUp = dy === -20;
-    const goingDown = dy === 20;
-    const goingRight = dx === 20;
-    const goingLeft = dx === -20;
-
-    if (keyPressed === LEFT_KEY && !goingRight) { dx = -20; dy = 0; }
-    if (keyPressed === UP_KEY && !goingDown) { dx = 0; dy = -20; }
-    if (keyPressed === RIGHT_KEY && !goingLeft) { dx = 20; dy = 0; }
-    if (keyPressed === DOWN_KEY && !goingUp) { dx = 0; dy = 20; }
-  }
-
-  function drawGame() {
-    const head = {x: snake[0].x + dx, y: snake[0].y + dy};
-    snake.unshift(head);
-
-    const hasEatenFood = snake[0].x === food.x && snake[0].y === food.y;
-    
-    if (hasEatenFood) {
-      score += 10;
-      food = {x: Math.floor(Math.random() * 20) * 20, y: Math.floor(Math.random() * 20) * 20};
-    } else {
-      snake.pop();
-    }
-
-    // Check game over
-    if (head.x < 0 || head.x >= 400 || head.y < 0 || head.y >= 400 || 
-        snake.slice(1).some(segment => segment.x === head.x && segment.y === head.y)) {
-      stopGame();
-      alert("Game Over! Score: " + score);
-      return;
-    }
-
-    // Draw board
+  function updateGame() {
     ctx.fillStyle = '#050505';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Draw Food
-    ctx.fillStyle = '#ff3333';
-    ctx.fillRect(food.x, food.y, 20, 20);
+    if (isGameOver) {
+      ctx.fillStyle = 'white';
+      ctx.font = '24px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2 - 20);
+      ctx.fillText('Score: ' + score, canvas.width / 2, canvas.height / 2 + 10);
+      ctx.font = '16px monospace';
+      ctx.fillStyle = '#aaa';
+      ctx.fillText('Tap to restart', canvas.width / 2, canvas.height / 2 + 50);
+      ctx.textAlign = 'left';
+      return;
+    }
 
-    // Draw Snake
+    birdVelocity += birdGravity;
+    birdY += birdVelocity;
+
+    frameCount++;
+    if (frameCount % 90 === 0) {
+      let gapPosition = Math.random() * 200 + 50; 
+      pipes.push({ x: canvas.width, y: gapPosition, passed: false });
+    }
+
+    ctx.fillStyle = '#fff';
+    const gapSize = 130;
+    const pipeWidth = 40;
+
+    for (let i = 0; i < pipes.length; i++) {
+      let p = pipes[i];
+      p.x -= 3; 
+
+      ctx.fillRect(p.x, 0, pipeWidth, p.y);
+      ctx.fillRect(p.x, p.y + gapSize, pipeWidth, canvas.height - p.y - gapSize);
+
+      if (
+        (100 < p.x + pipeWidth && 100 + 20 > p.x && birdY < p.y) || 
+        (100 < p.x + pipeWidth && 100 + 20 > p.x && birdY + 20 > p.y + gapSize) 
+      ) {
+        isGameOver = true;
+      }
+
+      if (p.x + pipeWidth < 100 && !p.passed) {
+        score++;
+        p.passed = true;
+      }
+    }
+
+    pipes = pipes.filter(p => p.x + pipeWidth > 0);
+
+    if (birdY > canvas.height || birdY < 0) {
+      isGameOver = true;
+    }
+
     ctx.fillStyle = '#4CAF50';
-    snake.forEach(part => ctx.fillRect(part.x, part.y, 19, 19));
+    ctx.fillRect(100, birdY, 20, 20);
+
+    ctx.fillStyle = 'white';
+    ctx.font = '24px monospace';
+    ctx.fillText(score, 15, 35);
   }
 });
 </script>
