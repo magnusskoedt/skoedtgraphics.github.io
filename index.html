@@ -37,7 +37,7 @@ body {
 
 header, section, main, footer, .lightbox-overlay { position: relative; z-index: 1; }
 
-a, button, .hover-target, .char, .list-item {
+a, button, .hover-target, .char, .mosaic-item {
   cursor: pointer;
 }
 
@@ -304,16 +304,19 @@ nav a:hover::after { width: 100%; }
 .carousel-btn.prev { left: 40px; }
 .carousel-btn.next { right: 40px; }
 
-/* ── NEW LIST LAYOUT ─────────────────────────────────────────── */
 .portfolio-section {
   padding: 120px 50px;
-  max-width: 1200px;
+  max-width: 1800px;
   margin: 0 auto;
 }
 
 .section-header {
   text-align: center;
-  margin-bottom: 80px;
+  margin-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
 }
 
 .section-header h2 {
@@ -322,71 +325,87 @@ nav a:hover::after { width: 100%; }
   background: linear-gradient(120deg, #ffffff, #555555);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-}
-
-.work-list {
-  display: flex;
-  flex-direction: column;
-}
-
-.list-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 40px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  text-decoration: none;
+  padding-bottom: 20px;
   position: relative;
-  transition: opacity 0.3s ease;
+  margin-bottom: 0;
 }
 
-.list-item h3 {
-  font-size: 2.5rem;
-  color: #fff;
-  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-  pointer-events: none;
+.section-header h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.15);
 }
 
-.list-item .category {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  color: #666;
-  transition: color 0.4s ease;
+.mosaic-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 350px;
+  gap: 15px;
 }
 
-.list-item:hover h3 {
-  transform: translateX(20px);
-  color: #fff;
-}
-
-.list-item:hover .category {
-  color: #fff;
-}
-
-.work-list:hover .list-item:not(:hover) {
-  opacity: 0.3;
-}
-
-/* Float Preview Image */
-.float-preview {
-  position: fixed;
-  width: 300px;
-  height: 400px;
-  pointer-events: none;
-  z-index: 10;
+.mosaic-item {
+  position: relative;
   overflow: hidden;
-  border-radius: 10px;
-  opacity: 0;
-  transform: scale(0.8);
-  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  background-color: #111;
+  border-radius: 12px;
 }
 
-.float-preview img {
+.mosaic-item a {
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.mosaic-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1), filter 1.2s ease;
+  filter: brightness(0.7) grayscale(20%);
 }
+
+.span-2-col { grid-column: span 2; }
+.span-2-row { grid-row: span 2; }
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 60%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 40px;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.mosaic-item .overlay h3 {
+  font-size: 1.5rem;
+  color: #ffffff !important;
+  transform: translateY(15px);
+  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.mosaic-item .overlay p {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #cccccc !important;
+  margin-top: 5px;
+  transform: translateY(15px);
+  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition-delay: 0.05s;
+}
+
+.mosaic-item:hover img { transform: scale(1.05); filter: brightness(1) grayscale(0%); }
+.mosaic-item:hover .overlay { opacity: 1; }
+.mosaic-item:hover .overlay h3, .mosaic-item:hover .overlay p { transform: translateY(0); }
 
 .reveal {
   opacity: 0;
@@ -550,15 +569,22 @@ footer {
   .section-header { margin-bottom: 40px; }
   .section-header h2 { font-size: 2rem !important; letter-spacing: 4px; padding-bottom: 15px; }
 
-  .list-item h3 { font-size: 1.5rem; }
-  .float-preview { display: none; }
-
   .video-section { padding: 40px 0; }
   .carousel-slide { min-width: 85%; margin: 0 5px; }
   .carousel-btn.prev { left: 10px; }
   .carousel-btn.next { right: 10px; }
 
   .portfolio-section { padding: 30px 15px; }
+  .mosaic-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 200px;
+    gap: 10px;
+  }
+  
+  .overlay { display: none; }
+  .mosaic-item img { filter: brightness(1) grayscale(0%); }
+
+  .span-2-col, .span-2-row { grid-column: span 1; grid-row: span 1; }
 
   .about-section { padding: 60px 25px; }
   .about-content { grid-template-columns: 1fr; gap: 40px; }
@@ -668,58 +694,76 @@ footer {
   <div class="section-header reveal">
     <h2>Selected Graphics</h2>
   </div>
-
-  <div class="work-list">
-    <a href="aab2.png" class="list-item lightbox-link reveal" data-img="aab2.png">
-      <h3>Player Poster</h3>
-      <span class="category">Photoshop & Indesign</span>
-    </a>
-    <a href="marley.png" class="list-item lightbox-link reveal" data-img="marley.png">
-      <h3>Marley Poster</h3>
-      <span class="category">Photoshop</span>
-    </a>
-    <a href="f1.png" class="list-item lightbox-link reveal" data-img="f1.png">
-      <h3>F1 Poster</h3>
-      <span class="category">Photoshop</span>
-    </a>
-    <a href="lac.PNG" class="list-item lightbox-link reveal" data-img="lac.PNG">
-      <h3>Lacoste Abribus</h3>
-      <span class="category">Photoshop</span>
-    </a>
-    <a href="aab1.png" class="list-item lightbox-link reveal" data-img="aab1.png">
-      <h3>Matchday Poster</h3>
-      <span class="category">Photoshop</span>
-    </a>
-    <a href="final.png" class="list-item lightbox-link reveal" data-img="final.png">
-      <h3>Movie Poster</h3>
-      <span class="category">Illustrator</span>
-    </a>
-    <a href="frontier.jpg" class="list-item lightbox-link reveal" data-img="frontier.jpg">
-      <h3>Frontier Poster</h3>
-      <span class="category">Photoshop</span>
-    </a>
-    <a href="kaffe.png" class="list-item lightbox-link reveal" data-img="kaffe.png">
-      <h3>Campaign Mockup</h3>
-      <span class="category">Photoshop</span>
-    </a>
-    <a href="aab4.jpg" class="list-item lightbox-link reveal" data-img="aab4.jpg">
-      <h3>Lineup Graphic</h3>
-      <span class="category">Illustrator & Photoshop</span>
-    </a>
-    <a href="kropsind.PNG" class="list-item lightbox-link reveal" data-img="kropsind.PNG">
-      <h3>Catalog Cover</h3>
-      <span class="category">Photoshop & Indesign</span>
-    </a>
-    <a href="doterra.PNG" class="list-item lightbox-link reveal" data-img="doterra.PNG">
-      <h3>Product Showcase</h3>
-      <span class="category">Photoshop</span>
-    </a>
+  
+  <div class="mosaic-grid">
+    <div class="mosaic-item span-2-col span-2-row reveal">
+      <a href="aab2.png" class="lightbox-link">
+        <img src="aab2.png" alt="Player Poster">
+        <div class="overlay"><h3>Player Poster</h3><p>Photoshop & Indesign</p></div>
+      </a>
+    </div>
+    <div class="mosaic-item span-2-row reveal">
+      <a href="marley.png" class="lightbox-link">
+        <img src="marley.png" alt="Marley Poster">
+        <div class="overlay"><h3>Marley Poster</h3><p>Photoshop</p></div>
+      </a>
+    </div>
+    <div class="mosaic-item span-2-row reveal">
+      <a href="f1.png" class="lightbox-link">
+        <img src="f1.png" alt="F1 Poster">
+        <div class="overlay"><h3>F1 Poster</h3><p>Photoshop</p></div>
+      </a>
+    </div>
+    <div class="mosaic-item span-2-col reveal">
+      <a href="lac.PNG" class="lightbox-link">
+        <img src="lac.PNG" alt="Lacoste Abribus">
+        <div class="overlay"><h3>Lacoste Abribus</h3><p>Photoshop</p></div>
+      </a>
+    </div>
+    <div class="mosaic-item span-2-col reveal">
+      <a href="aab1.png" class="lightbox-link">
+        <img src="aab1.png" alt="Matchday Poster">
+        <div class="overlay"><h3>Matchday Poster</h3><p>Photoshop</p></div>
+      </a>
+    </div>
+    <div class="mosaic-item span-2-row reveal">
+      <a href="final.png" class="lightbox-link">
+        <img src="final.png" alt="Movie Poster">
+        <div class="overlay"><h3>Movie Poster</h3><p>Illustrator</p></div>
+      </a>
+    </div>
+    <div class="mosaic-item reveal">
+      <a href="frontier.jpg" class="lightbox-link">
+        <img src="frontier.jpg" alt="Movie Poster">
+        <div class="overlay"><h3>Movie Poster</h3><p>Photoshop</p></div>
+      </a>
+    </div>
+    <div class="mosaic-item span-2-col reveal">
+      <a href="kaffe.png" class="lightbox-link">
+        <img src="kaffe.png" alt="Campaign Mockup">
+        <div class="overlay"><h3>Campaign Mockup</h3><p>Photoshop</p></div>
+      </a>
+    </div>
+    <div class="mosaic-item span-2-row reveal">
+      <a href="aab4.jpg" class="lightbox-link">
+        <img src="aab4.jpg" alt="Lineup Graphic">
+        <div class="overlay"><h3>Lineup Graphic</h3><p>Illustrator & Photoshop</p></div>
+      </a>
+    </div>
+    <div class="mosaic-item span-2-col reveal">
+      <a href="kropsind.PNG" class="lightbox-link">
+        <img src="kropsind.PNG" alt="Catalog Cover">
+        <div class="overlay"><h3>Catalog Cover</h3><p>Photoshop & Indesign</p></div>
+      </a>
+    </div>
+    <div class="mosaic-item span-2-col reveal">
+      <a href="doterra.PNG" class="lightbox-link">
+        <img src="doterra.PNG" alt="Product Showcase">
+        <div class="overlay"><h3>Product Showcase</h3><p>Photoshop</p></div>
+      </a>
+    </div>
   </div>
 </main>
-
-<div class="float-preview" id="float-preview">
-  <img src="" alt="Preview">
-</div>
 
 <section class="about-section reveal">
   <div class="section-header reveal">
@@ -778,33 +822,6 @@ footer {
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
-  // Floating Image Logic
-  const floatPreview = document.getElementById('float-preview');
-  const previewImg = floatPreview.querySelector('img');
-  const listItems = document.querySelectorAll('.list-item');
-
-  listItems.forEach(item => {
-    item.addEventListener('mouseenter', () => {
-      const imgPath = item.getAttribute('data-img');
-      previewImg.src = imgPath;
-      floatPreview.style.opacity = '1';
-      floatPreview.style.transform = 'scale(1)';
-    });
-
-    item.addEventListener('mouseleave', () => {
-      floatPreview.style.opacity = '0';
-      floatPreview.style.transform = 'scale(0.8)';
-    });
-
-    item.addEventListener('mousemove', (e) => {
-      // Offset so image follows cursor with a slight delay
-      const x = e.clientX + 30;
-      const y = e.clientY - 200;
-      floatPreview.style.left = `${x}px`;
-      floatPreview.style.top = `${y}px`;
-    });
-  });
-
   const header = document.getElementById('main-header');
   window.addEventListener('scroll', () => {
     if (window.scrollY > 50) header.classList.add('scrolled');
@@ -860,7 +877,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.lightbox-link').forEach(link => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
-      lightboxImg.src = link.getAttribute('data-img');
+      lightboxImg.src = link.href;
       lightbox.classList.add('active');
       document.body.style.overflow = 'hidden';
     });
